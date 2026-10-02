@@ -141,17 +141,14 @@ function OtpBoxes({ value, onChange }: { value: string; onChange: (v: string) =>
 }
 
 export function SplashScreen() {
-  const { db } = useStore();
   const navigate = useNavigate();
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(() => {
-      if (!db.onboarded) navigate({ to: "/onboarding", replace: true });
-      else if (!db.customerId) navigate({ to: "/login", replace: true });
-      else navigate({ to: "/home", replace: true });
+      navigate({ to: "/onboarding", replace: true });
     }, reduce ? 500 : 2500);
     return () => window.clearTimeout(timer);
-  }, [db.onboarded, db.customerId, navigate]);
+  }, [navigate]);
 
   return (
     <Phone>
@@ -179,7 +176,7 @@ export function OnboardingScreen() {
   const navigate = useNavigate();
   const slide = slides[index];
   const last = index === slides.length - 1;
-  const finish = (to: "/welcome" | "/register" | "/login") => {
+  const finish = (to: "/login" | "/register") => {
     markOnboarded();
     navigate({ to });
   };
@@ -191,7 +188,7 @@ export function OnboardingScreen() {
         <div className="relative flex h-full flex-col">
           <div className="flex items-center justify-between px-3 pt-3">
             <Logo className="h-11 w-auto" />
-            <button type="button" className="h-11 px-3 text-[14px] font-medium text-white" onClick={() => finish("/welcome")}>
+            <button type="button" className="h-11 px-3 text-[14px] font-medium text-white" onClick={() => finish("/login")}>
               Skip
             </button>
           </div>
@@ -207,11 +204,11 @@ export function OnboardingScreen() {
             </div>
             {last ? (
               <div className="mt-6 grid gap-2">
-                <MButton full onClick={() => finish("/register")}>
-                  Create account
+                <MButton full onClick={() => finish("/login")}>
+                  Log in
                 </MButton>
-                <MButton full variant="outlined" onClick={() => finish("/login")}>
-                  I already have an account
+                <MButton full variant="outlined" onClick={() => finish("/register")}>
+                  Create account
                 </MButton>
               </div>
             ) : (
@@ -660,7 +657,7 @@ export function TwoFactorScreen() {
       }
     >
       <OtpBoxes value={code} onChange={setCode} />
-      {error ? <p className="text-[13px] text-secondary">{error}</p> : null}
+      {error ? <p className="text-[13px] font-medium text-error">{error}</p> : null}
       {db.pending?.code ? (
         <p className="text-[13px] text-[var(--on-surface-variant)]">
           Demo code <span className="font-medium text-foreground">{db.pending.code}</span>

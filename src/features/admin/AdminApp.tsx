@@ -80,7 +80,7 @@ export function AdminLoginScreen() {
             <MField label="Authentication code" inputMode="numeric" value={code} onChange={(e) => setCode(e.target.value)} />
           </>
         )}
-        {error ? <p className="text-[13px] text-secondary">{error}</p> : null}
+        {error ? <p className="text-[13px] font-medium text-error">{error}</p> : null}
         <MButton type="submit" full>{step === "password" ? "Continue" : "Enter dashboard"}</MButton>
       </form>
     </div>

@@ -71,7 +71,6 @@ type Store = {
   logout: () => void;
   startReset: (email: string) => boolean;
   resetPassword: (code: string, password: string) => boolean;
-  setBiometric: (enabled: boolean) => void;
   unlock: () => void;
   armSensitive: () => void;
   clearSensitive: () => void;
@@ -143,8 +142,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const loaded = loadDatabase();
     setDb(loaded);
-    const person = loaded.users.find((u) => u.id === loaded.customerId);
-    setLocked(Boolean(person?.biometricEnabled));
     setReady(true);
   }, []);
   useEffect(() => {
@@ -190,14 +187,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return () => window.clearInterval(tick);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id, user?.lockMinutes]);
-
-  useEffect(() => {
-    const onVis = () => {
-      if (document.visibilityState === "hidden" && user) setSensitiveLocked(true);
-    };
-    document.addEventListener("visibilitychange", onVis);
-    return () => document.removeEventListener("visibilitychange", onVis);
-  }, [user]);
 
   const notify = (userId: string, category: NoticeCategory, title: string, body: string, href: string, lockText: string) => {
     const person = db.users.find((u) => u.id === userId);
@@ -303,7 +292,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             ...d.sessions.map((s) => ({ ...s, current: false })),
           ],
         }));
-        setLocked(person.biometricEnabled);
+        setLocked(false);
         setSensitiveLocked(false);
         touch();
         return "ok";
@@ -336,13 +325,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           pending: null,
         }));
         return true;
-      },
-      setBiometric: (enabled) => {
-        update((d) => ({
-          ...d,
-          users: d.users.map((u) => (u.id === d.customerId ? { ...u, biometricEnabled: enabled } : u)),
-        }));
-        if (!enabled) setLocked(false);
       },
       unlock: () => setLocked(false),
       armSensitive: () => setSensitiveLocked(true),

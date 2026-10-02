@@ -67,7 +67,7 @@ export function MField({ label, error, hint, id, className, trailing, ...props }
           className={cn(
             "peer h-14 w-full rounded-xl border bg-[var(--surface-low)] px-4 pt-4 text-[16px] text-foreground outline-none",
             trailing && "pr-14",
-            error ? "border-secondary" : "border-outline focus:border-2 focus:border-primary",
+            error ? "border-2 border-error" : "border-outline focus:border-2 focus:border-primary",
           )}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${fieldId}-error` : undefined}
@@ -75,14 +75,17 @@ export function MField({ label, error, hint, id, className, trailing, ...props }
         />
         <label
           htmlFor={fieldId}
-          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 bg-background px-1 text-[16px] text-[var(--on-surface-variant)] transition-all peer-focus:top-0 peer-focus:text-[12px] peer-focus:text-primary peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-[12px]"
+          className={cn(
+            "pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 bg-background px-1 text-[16px] transition-all peer-focus:top-0 peer-focus:text-[12px] peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-[12px]",
+            error ? "text-error peer-focus:text-error" : "text-[var(--on-surface-variant)] peer-focus:text-primary",
+          )}
         >
           {label}
         </label>
         {trailing ? <div className="absolute top-1/2 right-1 -translate-y-1/2">{trailing}</div> : null}
       </div>
       {error ? (
-        <p id={`${fieldId}-error`} className="mt-1 px-4 text-[12px] text-secondary">
+        <p id={`${fieldId}-error`} className="mt-1 px-4 text-[12px] font-medium text-error">
           {error}
         </p>
       ) : hint ? (
@@ -112,7 +115,7 @@ export function MSelect({
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block px-1 text-[12px] text-[var(--on-surface-variant)]">
+      <label htmlFor={id} className={cn("mb-1 block px-1 text-[12px]", error ? "font-medium text-error" : "text-[var(--on-surface-variant)]")}>
         {label}
       </label>
       <select
@@ -123,12 +126,12 @@ export function MSelect({
         onChange={(event) => onChange(event.target.value)}
         className={cn(
           "h-14 w-full border bg-surface-high px-3 text-[16px] text-foreground outline-none disabled:opacity-40",
-          error ? "border-secondary" : "border-outline focus:border-2 focus:border-primary",
+          error ? "border-2 border-error" : "border-outline focus:border-2 focus:border-primary",
         )}
       >
         {children}
       </select>
-      {error ? <p className="mt-1 px-1 text-[12px] text-secondary">{error}</p> : hint ? <p className="mt-1 px-1 text-[12px] text-[var(--on-surface-variant)]">{hint}</p> : null}
+      {error ? <p className="mt-1 px-1 text-[12px] font-medium text-error">{error}</p> : hint ? <p className="mt-1 px-1 text-[12px] text-[var(--on-surface-variant)]">{hint}</p> : null}
     </div>
   );
 }
@@ -137,18 +140,18 @@ export function MArea({ label, error, ...props }: TextareaHTMLAttributes<HTMLTex
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block px-1 text-[12px] text-[var(--on-surface-variant)]">
+      <label htmlFor={id} className={cn("mb-1 block px-1 text-[12px]", error ? "font-medium text-error" : "text-[var(--on-surface-variant)]")}>
         {label}
       </label>
       <textarea
         id={id}
         className={cn(
           "min-h-28 w-full rounded-xl border bg-transparent px-4 py-3 text-[16px] outline-none",
-          error ? "border-secondary" : "border-outline focus:border-2 focus:border-primary",
+          error ? "border-2 border-error" : "border-outline focus:border-2 focus:border-primary",
         )}
         {...props}
       />
-      {error ? <p className="mt-1 px-1 text-[12px] text-secondary">{error}</p> : null}
+      {error ? <p className="mt-1 px-1 text-[12px] font-medium text-error">{error}</p> : null}
     </div>
   );
 }
@@ -389,15 +392,15 @@ export function SnackHost() {
   const toast = toasts[toasts.length - 1];
   return (
     <div className="absolute inset-x-4 bottom-24 z-[60]">
-      <div className="flex items-center gap-3 rounded-lg bg-surface-highest px-4 py-3 text-[14px] shadow-lg" role="status">
-        <div className="flex-1">
-          <p>{toast.title}</p>
-          {toast.body ? <p className="text-[12px] text-[var(--on-surface-variant)]">{toast.body}</p> : null}
+      <div className="flex items-center gap-3 border border-[#3d4a5c] bg-[#252e3c] px-4 py-3 text-[14px] text-white shadow-lg" role="status">
+        <div className="flex-1 text-left">
+          <p className="font-medium text-white">{toast.title}</p>
+          {toast.body ? <p className="text-[13px] text-[#d7e0ea]">{toast.body}</p> : null}
         </div>
         {toast.action ? (
           <button
             type="button"
-            className="min-h-12 px-2 font-medium text-primary"
+            className="min-h-12 px-2 font-medium text-tertiary"
             onClick={() => {
               toast.action?.run();
               dismissToast(toast.id);
@@ -406,7 +409,7 @@ export function SnackHost() {
             {toast.action.label}
           </button>
         ) : (
-          <button type="button" className="min-h-12 px-2 text-primary" onClick={() => dismissToast(toast.id)}>
+          <button type="button" className="min-h-12 px-2 font-medium text-tertiary" onClick={() => dismissToast(toast.id)}>
             Dismiss
           </button>
         )}

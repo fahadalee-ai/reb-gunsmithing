@@ -307,7 +307,7 @@ export function BookFlowScreen() {
                 </MChip>
               ))}
             </div>
-            {errors.when ? <p className="mt-2 text-[12px] text-secondary">{errors.when}</p> : null}
+            {errors.when ? <p className="mt-2 text-[12px] font-medium text-error">{errors.when}</p> : null}
             {date && db.availability.hours.find((h) => h.day === new Date(date + "T12:00:00").getDay())?.closed ? (
               <p className="mt-2 text-[14px]">The shop is closed on {weekdayName(new Date(date + "T12:00:00").getDay())}.</p>
             ) : null}
@@ -325,7 +325,6 @@ export function BookFlowScreen() {
         {step === 4 && (
           <div className="grid gap-3">
             <p className="text-[14px] leading-6">Optional. Photos stay in the app and are not saved to your camera roll.</p>
-            <MButton variant="tonal" onClick={() => navigate({ to: "/inspect/new" })}>Open secure camera</MButton>
             <label className="grid min-h-12 place-items-center rounded-full border border-outline text-[14px]">
               Add a photo
               <input
@@ -349,18 +348,75 @@ export function BookFlowScreen() {
           </div>
         )}
         {step === 5 && service && (
-          <div className="grid gap-3">
-            <MCard>
-              <p className="text-[14px]">{service.name}</p>
-              <p className="text-[14px]">{firearmType} · {make} {model} · {caliber}</p>
-              <p className="text-[14px]">{date && time ? formatWhen(date, time) : ""}</p>
-              <p className="text-[14px] text-[var(--on-surface-variant)]">{description}</p>
-              <button type="button" className="mt-2 min-h-12 text-[14px] text-primary" onClick={() => setStep(0)}>Edit service</button>
-              <button type="button" className="min-h-12 text-[14px] text-primary" onClick={() => setStep(1)}>Edit firearm</button>
-              <button type="button" className="min-h-12 text-[14px] text-primary" onClick={() => setStep(2)}>Edit time</button>
-            </MCard>
-            <CheckRow checked={ack} onChange={setAck}>{POLICY_ACK}</CheckRow>
-            {errors.ack ? <p className="text-[12px] text-secondary">{errors.ack}</p> : null}
+          <div className="grid gap-4">
+            <section className="relative -mx-4 h-44 overflow-hidden">
+              <img src={service.image || asset("media/hero-workshop.jpg")} alt="" className="absolute inset-0 size-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0e1218] via-[#0e1218]/50 to-black/25" />
+              <div className="relative flex h-full flex-col justify-end px-4 pb-4">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Your visit</p>
+                <h2 className="text-[26px] leading-tight font-medium text-white">{service.name}</h2>
+                <p className="mt-1 text-[15px] text-white">{date && time ? formatWhen(date, time) : "Time not set"}</p>
+              </div>
+              <span className="absolute inset-x-0 bottom-0 h-[3px] bg-tertiary" />
+            </section>
+            <section className="overflow-hidden border border-[#3d4a5c] bg-[var(--surface-low)]">
+              <div className="border-b border-[#3d4a5c] px-4 py-3">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Firearm</p>
+                <p className="mt-1 text-[18px] font-medium text-white">
+                  {make} {model}
+                </p>
+                <p className="text-[14px] text-[#d7e0ea]">
+                  {firearmType} · {caliber}
+                </p>
+              </div>
+              <div className="border-b border-[#3d4a5c] px-4 py-3">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Request</p>
+                <p className="mt-1 text-[15px] leading-6 text-white">{description}</p>
+              </div>
+              {notes ? (
+                <div className="border-b border-[#3d4a5c] px-4 py-3">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Drop-off notes</p>
+                  <p className="mt-1 text-[15px] leading-6 text-white">{notes}</p>
+                </div>
+              ) : null}
+              <div className="px-4 py-3">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Shop</p>
+                <p className="mt-1 text-[15px] leading-6 text-white">{db.business.address}</p>
+                <p className="text-[13px] text-[#d7e0ea]">{TIMEZONE}</p>
+              </div>
+            </section>
+            {media.length > 0 ? (
+              <div className="grid grid-cols-3 gap-2">
+                {media.map((item) => (
+                  <img key={item.id} src={item.src} alt="" className="h-24 w-full object-cover" />
+                ))}
+              </div>
+            ) : null}
+            <div className="grid gap-2">
+              {(
+                [
+                  ["Service", 0],
+                  ["Firearm", 1],
+                  ["Time", 2],
+                ] as const
+              ).map(([label, target]) => (
+                <button
+                  key={label}
+                  type="button"
+                  className="flex h-12 items-center justify-between border border-[#9eb6d4] px-4 text-[14px] font-medium text-white"
+                  onClick={() => setStep(target)}
+                >
+                  <span>{label}</span>
+                  <span className="text-[#d3e4ff]">Edit</span>
+                </button>
+              ))}
+            </div>
+            <div className={`border bg-[var(--surface-low)] px-3 py-2 ${errors.ack ? "border-[#ff8a80]" : "border-[#3d4a5c]"}`}>
+              <CheckRow checked={ack} onChange={setAck}>
+                {POLICY_ACK}
+              </CheckRow>
+              {errors.ack ? <p className="pb-2 pl-8 text-[13px] font-medium text-[#ffb4ab]">{errors.ack}</p> : null}
+            </div>
           </div>
         )}
         <div className="mt-6">
@@ -396,29 +452,40 @@ export function BookDoneScreen() {
   const service = db.services.find((s) => s.id === appt?.serviceId);
   if (!appt) return null;
   return (
-    <div className="grid gap-4 px-5 py-10 text-center">
-      <div className="mx-auto grid size-20 place-items-center rounded-full bg-primary text-3xl text-primary-foreground" aria-hidden>✓</div>
-      <h1 className="text-[32px]">You're booked</h1>
-      <p className="text-[16px]">{service?.name}</p>
-      <p className="text-[14px] text-[var(--on-surface-variant)]">{appt.id}<br />{formatWhen(appt.date, appt.time)}</p>
-      <MButton
-        full
-        variant="tonal"
-        onClick={() => {
-          const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:REB ${service?.name}\nDESCRIPTION:${appt.id}\nDTSTART:${appt.date.replaceAll("-", "")}T${appt.time.replace(":", "")}00\nEND:VEVENT\nEND:VCALENDAR`;
-          const blob = new Blob([ics], { type: "text/calendar" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `${appt.id}.ics`;
-          link.click();
-          URL.revokeObjectURL(url);
-        }}
-      >
-        Add to Calendar
-      </MButton>
-      <MButton full onClick={() => navigate({ to: "/book/$id", params: { id: appt.id } })}>View Appointment</MButton>
-      <MButton full variant="text" onClick={() => navigate({ to: "/messages" })}>Message Gunsmith</MButton>
+    <div className="flex min-h-full flex-col justify-center px-5 py-8 pb-28 text-center">
+      <div className="mx-auto grid size-16 place-items-center bg-tertiary text-[28px] font-semibold text-[var(--on-tertiary)]" aria-hidden>
+        ✓
+      </div>
+      <p className="mt-5 text-[12px] font-semibold tracking-[0.16em] text-tertiary uppercase">Confirmed</p>
+      <h1 className="mt-1 text-[32px] leading-tight font-medium text-white">You're booked</h1>
+      <p className="mt-4 text-[18px] font-medium text-white">{service?.name}</p>
+      <p className="mt-1 text-[15px] text-white">{appt.id}</p>
+      <p className="text-[15px] text-[#d7e0ea]">{formatWhen(appt.date, appt.time)}</p>
+      <div className="mt-8 grid gap-3">
+        <MButton full className="h-12" onClick={() => navigate({ to: "/book/$id", params: { id: appt.id } })}>
+          View appointment
+        </MButton>
+        <MButton
+          full
+          variant="outlined"
+          className="h-12 border-[#9eb6d4] text-white"
+          onClick={() => {
+            const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:REB ${service?.name}\nDESCRIPTION:${appt.id}\nDTSTART:${appt.date.replaceAll("-", "")}T${appt.time.replace(":", "")}00\nEND:VEVENT\nEND:VCALENDAR`;
+            const blob = new Blob([ics], { type: "text/calendar" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `${appt.id}.ics`;
+            link.click();
+            URL.revokeObjectURL(url);
+          }}
+        >
+          Add to calendar
+        </MButton>
+        <MButton full variant="text" className="h-12 text-[#d3e4ff]" onClick={() => navigate({ to: "/messages" })}>
+          Message the shop
+        </MButton>
+      </div>
     </div>
   );
 }

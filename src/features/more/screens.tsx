@@ -473,7 +473,7 @@ export function FirearmsScreen() {
 }
 
 export function SecurityScreen() {
-  const { user, changePassword, setBiometric, setLockMinutes, setTwoFactor, deleteAccount, db, signOutSession, pushToast } = useStore();
+  const { user, changePassword, setLockMinutes, setTwoFactor, deleteAccount, db, signOutSession, pushToast } = useStore();
   const navigate = useNavigate();
   const [current, setCurrent] = useState("");
   const [next, setNext] = useState("");
@@ -488,10 +488,6 @@ export function SecurityScreen() {
         <MField label="Current password" type="password" value={current} onChange={(e) => setCurrent(e.target.value)} />
         <MField label="New password" type="password" value={next} onChange={(e) => setNext(e.target.value)} />
         <MButton onClick={() => pushToast(changePassword(current, next) ? "Password updated" : "Current password is wrong")}>Change password</MButton>
-        <label className="flex min-h-12 items-center justify-between text-[14px]">
-          Biometric lock
-          <input type="checkbox" checked={user.biometricEnabled} onChange={(e) => setBiometric(e.target.checked)} />
-        </label>
         <label className="text-[14px]">
           Auto-lock
           <select className="mt-1 h-12 w-full rounded-xl border border-outline bg-transparent px-3" value={user.lockMinutes} onChange={(e) => setLockMinutes(Number(e.target.value))}>

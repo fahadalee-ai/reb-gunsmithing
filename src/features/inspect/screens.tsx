@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ConfirmDialog, EmptyState, MButton, MCard, PageBanner, Progress, SecureSurface, StatusChip, TopBar } from "@/components/m3";
+import { CheckRow, ConfirmDialog, EmptyState, MButton, MCard, PageBanner, Progress, SecureSurface, StatusChip, TopBar } from "@/components/m3";
 import { ANGLES, DISCLAIMER, SAFETY_REMINDER } from "@/lib/business";
 import { analyzeVisibleCondition } from "@/lib/ai";
 import { brightnessFromCanvas } from "@/lib/media";
@@ -244,26 +244,78 @@ export function InspectFlowScreen() {
           </div>
         )}
         {phase === "review" && (
-          <div className="px-4 py-4">
+          <div className="flex min-h-full flex-col">
             <TopBar title="Review" back={() => setPhase("capture")} />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-4 px-4 pb-4">
+              <p className="text-[15px] leading-6 text-[#d7e0ea]">Check each photo, add a short note, then continue.</p>
               {captures.map((item) => (
-                <figure key={item.id} className="rounded-2xl bg-card p-2">
-                  {item.kind === "video" ? <video src={item.src} className="h-28 w-full rounded-xl object-cover" controls /> : <img src={item.src} alt={item.angle} className="h-28 w-full rounded-xl object-cover" />}
-                  <figcaption className="mt-1 text-[12px]">{item.angle}</figcaption>
-                  <label className="text-[12px]">
-                    Note
-                    <input className="mt-1 h-10 w-full rounded-lg border border-outline bg-transparent px-2" value={item.caption} onChange={(e) => setCaptures((list) => list.map((c) => c.id === item.id ? { ...c, caption: e.target.value } : c))} />
-                  </label>
-                  <button type="button" className="min-h-12 text-[13px] text-primary" onClick={() => { setAngle(ANGLES.findIndex((a) => a.label === item.angle)); setPhase("capture"); }}>Retake</button>
-                  <button type="button" className="min-h-12 text-[13px] text-secondary" onClick={() => setDeleteId(item.id)}>Delete</button>
-                </figure>
+                <article key={item.id} className="overflow-hidden border border-[#3d4a5c] bg-[var(--surface-low)]">
+                  <div className="relative">
+                    {item.kind === "video" ? (
+                      <video src={item.src} className="h-56 w-full bg-black object-cover" controls />
+                    ) : (
+                      <img src={item.src} alt={item.angle} className="h-56 w-full object-cover" />
+                    )}
+                    <span className="absolute bottom-3 left-3 bg-black/75 px-2.5 py-1 text-[13px] font-medium text-white">{item.angle}</span>
+                  </div>
+                  <div className="grid gap-3 p-3">
+                    <label className="grid gap-1.5 text-[13px] font-medium text-[#d7e0ea]">
+                      Note
+                      <input
+                        className="h-12 w-full border border-[#9eb6d4] bg-[#0e1218] px-3 text-[16px] text-white outline-none focus:border-2 focus:border-primary"
+                        placeholder="What should the shop notice?"
+                        value={item.caption}
+                        onChange={(e) => setCaptures((list) => list.map((c) => (c.id === item.id ? { ...c, caption: e.target.value } : c)))}
+                      />
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        className="h-12 border border-[#9eb6d4] text-[14px] font-medium text-white"
+                        onClick={() => {
+                          setAngle(Math.max(0, ANGLES.findIndex((a) => a.label === item.angle)));
+                          setPhase("capture");
+                        }}
+                      >
+                        Retake
+                      </button>
+                      <button
+                        type="button"
+                        className="h-12 border border-[#ff8a80] text-[14px] font-medium text-[#ffb4ab]"
+                        onClick={() => setDeleteId(item.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </article>
               ))}
+              <div className="grid gap-1 border border-[#3d4a5c] bg-[var(--surface-low)] px-3 py-2">
+                <CheckRow checked={flags.notFirearm} onChange={(notFirearm) => setFlags((f) => ({ ...f, notFirearm }))}>
+                  This does not show a firearm
+                </CheckRow>
+                <CheckRow checked={flags.person} onChange={(person) => setFlags((f) => ({ ...f, person }))}>
+                  A person or face is in frame
+                </CheckRow>
+              </div>
             </div>
-            <label className="mt-4 flex min-h-12 items-center gap-2 text-[14px]"><input type="checkbox" checked={flags.notFirearm} onChange={(e) => setFlags((f) => ({ ...f, notFirearm: e.target.checked }))} /> This does not show a firearm</label>
-            <label className="flex min-h-12 items-center gap-2 text-[14px]"><input type="checkbox" checked={flags.person} onChange={(e) => setFlags((f) => ({ ...f, person: e.target.checked }))} /> A person or face is in frame</label>
-            <MButton full className="mt-4" onClick={analyze}>Analyze visible condition</MButton>
-            <ConfirmDialog open={Boolean(deleteId)} title="Delete this capture?" body="It will be removed from this inspection." confirmLabel="Delete" danger onClose={() => setDeleteId(null)} onConfirm={() => { setCaptures((list) => list.filter((c) => c.id !== deleteId)); setDeleteId(null); }} />
+            <div className="sticky bottom-0 mt-auto border-t border-[#3d4a5c] bg-[var(--surface)] px-4 py-3">
+              <MButton full onClick={analyze} disabled={!captures.length}>
+                Analyze visible condition
+              </MButton>
+            </div>
+            <ConfirmDialog
+              open={Boolean(deleteId)}
+              title="Delete this capture?"
+              body="It will be removed from this inspection."
+              confirmLabel="Delete"
+              danger
+              onClose={() => setDeleteId(null)}
+              onConfirm={() => {
+                setCaptures((list) => list.filter((c) => c.id !== deleteId));
+                setDeleteId(null);
+              }}
+            />
           </div>
         )}
         {phase === "loading" && (

@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { BottomNav, Fab, MButton, MField, OfflineBanner, SnackHost } from "@/components/m3";
+import { useEffect } from "react";
+import { BottomNav, Fab, OfflineBanner, SnackHost } from "@/components/m3";
 import { Phone, Scroll } from "@/components/shell";
 import { MaintenanceScreen, UpdateScreen } from "@/features/more/screens";
 import { APP_VERSION } from "@/lib/business";
@@ -21,16 +21,13 @@ function versionBehind(current: string, minimum: string) {
 }
 
 function CustomerLayout() {
-  const { user, locked, sensitiveLocked, clearSensitive, db, touch } = useStore();
+  const { user, db, touch } = useStore();
   const navigate = useNavigate();
   const path = useRouterState({ select: (s) => s.location.pathname });
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!user) navigate({ to: "/login" });
-    else if (locked && user.biometricEnabled) navigate({ to: "/lock" });
-  }, [user, locked, navigate]);
+  }, [user, navigate]);
 
   if (!user) return null;
 
@@ -41,7 +38,6 @@ function CustomerLayout() {
       : path === "/inspect"
         ? { label: "New Inspection", to: "/inspect/new" as const }
         : null;
-  const sensitive = sensitiveLocked && (path.startsWith("/inspect") || path.startsWith("/messages"));
 
   return (
     <Phone>
@@ -59,31 +55,6 @@ function CustomerLayout() {
         {fab && !hideNav ? <Fab label={fab.label} onClick={() => navigate({ to: fab.to })} /> : null}
         {!hideNav && !db.flags.maintenance ? <BottomNav /> : null}
         <SnackHost />
-        {sensitive ? (
-          <div className="absolute inset-0 z-50 grid content-center gap-3 bg-background px-6">
-            <h1 className="text-[28px]">Confirm it's you</h1>
-            <p className="text-[14px] leading-6 text-[var(--on-surface-variant)]">Inspections and messages lock again after the app is backgrounded.</p>
-            <MButton
-              full
-              onClick={() => {
-                clearSensitive();
-              }}
-            >
-              Use biometric
-            </MButton>
-            <MField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} error={error} />
-            <MButton
-              full
-              variant="tonal"
-              onClick={() => {
-                if (password === user.password) clearSensitive();
-                else setError("Password does not match.");
-              }}
-            >
-              Continue
-            </MButton>
-          </div>
-        ) : null}
       </div>
     </Phone>
   );
