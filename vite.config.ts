@@ -1,7 +1,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 /** Public URL path (trailing slash). Must match Nginx `location` and `PREVIEW_URL` in preview.html. */
-const PRODUCTION_BASE = "/on-top-aba/";
+const PRODUCTION_BASE = "/";
 
 export default defineConfig({
   cloudflare: false,

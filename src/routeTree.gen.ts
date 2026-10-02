@@ -10,33 +10,564 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as ForgotRouteImport } from './routes/forgot'
+import { Route as ForgotSentRouteImport } from './routes/forgot-sent'
+import { Route as LockRouteImport } from './routes/lock'
+import { Route as LockSetupRouteImport } from './routes/lock-setup'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetRouteImport } from './routes/reset'
+import { Route as TwoFactorRouteImport } from './routes/two-factor'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as VerifyPhoneRouteImport } from './routes/verify-phone'
+import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AppAboutRouteImport } from './routes/_app/about'
+import { Route as AppContactRouteImport } from './routes/_app/contact'
+import { Route as AppFirearmsRouteImport } from './routes/_app/firearms'
+import { Route as AppHelpRouteImport } from './routes/_app/help'
+import { Route as AppHomeRouteImport } from './routes/_app/home'
+import { Route as AppNotificationsRouteImport } from './routes/_app/notifications'
+import { Route as AppSecurityRouteImport } from './routes/_app/security'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as LegalDocRouteImport } from './routes/legal.$doc'
+import { Route as AppBookIndexRouteImport } from './routes/_app/book/index'
+import { Route as AppBookIdRouteImport } from './routes/_app/book/$id'
+import { Route as AppBookNewRouteImport } from './routes/_app/book/new'
+import { Route as AppGalleryIndexRouteImport } from './routes/_app/gallery/index'
+import { Route as AppGalleryIdRouteImport } from './routes/_app/gallery/$id'
+import { Route as AppHistoryIndexRouteImport } from './routes/_app/history/index'
+import { Route as AppHistoryIdRouteImport } from './routes/_app/history/$id'
+import { Route as AppInspectIndexRouteImport } from './routes/_app/inspect/index'
+import { Route as AppInspectIdRouteImport } from './routes/_app/inspect/$id'
+import { Route as AppInspectNewRouteImport } from './routes/_app/inspect/new'
+import { Route as AppMessagesIndexRouteImport } from './routes/_app/messages/index'
+import { Route as AppMessagesIdRouteImport } from './routes/_app/messages/$id'
+import { Route as AppProfileIndexRouteImport } from './routes/_app/profile/index'
+import { Route as AppProfileEditRouteImport } from './routes/_app/profile/edit'
+import { Route as AppRequestIndexRouteImport } from './routes/_app/request/index'
+import { Route as AppServicesIndexRouteImport } from './routes/_app/services/index'
+import { Route as AppServicesIdRouteImport } from './routes/_app/services/$id'
+import { Route as AppBookDoneIdRouteImport } from './routes/_app/book/done.$id'
+import { Route as AppRequestDoneIdRouteImport } from './routes/_app/request/done.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotRoute = ForgotRouteImport.update({
+  id: '/forgot',
+  path: '/forgot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotSentRoute = ForgotSentRouteImport.update({
+  id: '/forgot-sent',
+  path: '/forgot-sent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LockRoute = LockRouteImport.update({
+  id: '/lock',
+  path: '/lock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LockSetupRoute = LockSetupRouteImport.update({
+  id: '/lock-setup',
+  path: '/lock-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetRoute = ResetRouteImport.update({
+  id: '/reset',
+  path: '/reset',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TwoFactorRoute = TwoFactorRouteImport.update({
+  id: '/two-factor',
+  path: '/two-factor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyPhoneRoute = VerifyPhoneRouteImport.update({
+  id: '/verify-phone',
+  path: '/verify-phone',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppAboutRoute = AppAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppContactRoute = AppContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFirearmsRoute = AppFirearmsRouteImport.update({
+  id: '/firearms',
+  path: '/firearms',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHelpRoute = AppHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHomeRoute = AppHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSecurityRoute = AppSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalDocRoute = LegalDocRouteImport.update({
+  id: '/legal/$doc',
+  path: '/legal/$doc',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppBookIndexRoute = AppBookIndexRouteImport.update({
+  id: '/book/',
+  path: '/book/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBookIdRoute = AppBookIdRouteImport.update({
+  id: '/book/$id',
+  path: '/book/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBookNewRoute = AppBookNewRouteImport.update({
+  id: '/book/new',
+  path: '/book/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGalleryIndexRoute = AppGalleryIndexRouteImport.update({
+  id: '/gallery/',
+  path: '/gallery/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGalleryIdRoute = AppGalleryIdRouteImport.update({
+  id: '/gallery/$id',
+  path: '/gallery/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoryIndexRoute = AppHistoryIndexRouteImport.update({
+  id: '/history/',
+  path: '/history/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoryIdRoute = AppHistoryIdRouteImport.update({
+  id: '/history/$id',
+  path: '/history/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInspectIndexRoute = AppInspectIndexRouteImport.update({
+  id: '/inspect/',
+  path: '/inspect/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInspectIdRoute = AppInspectIdRouteImport.update({
+  id: '/inspect/$id',
+  path: '/inspect/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInspectNewRoute = AppInspectNewRouteImport.update({
+  id: '/inspect/new',
+  path: '/inspect/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesIndexRoute = AppMessagesIndexRouteImport.update({
+  id: '/messages/',
+  path: '/messages/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesIdRoute = AppMessagesIdRouteImport.update({
+  id: '/messages/$id',
+  path: '/messages/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileIndexRoute = AppProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileEditRoute = AppProfileEditRouteImport.update({
+  id: '/profile/edit',
+  path: '/profile/edit',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRequestIndexRoute = AppRequestIndexRouteImport.update({
+  id: '/request/',
+  path: '/request/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppServicesIndexRoute = AppServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppServicesIdRoute = AppServicesIdRouteImport.update({
+  id: '/services/$id',
+  path: '/services/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBookDoneIdRoute = AppBookDoneIdRouteImport.update({
+  id: '/book/done/$id',
+  path: '/book/done/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRequestDoneIdRoute = AppRequestDoneIdRouteImport.update({
+  id: '/request/done/$id',
+  path: '/request/done/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgot': typeof ForgotRoute
+  '/forgot-sent': typeof ForgotSentRoute
+  '/lock': typeof LockRoute
+  '/lock-setup': typeof LockSetupRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
+  '/reset': typeof ResetRoute
+  '/two-factor': typeof TwoFactorRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/verify-phone': typeof VerifyPhoneRoute
+  '/welcome': typeof WelcomeRoute
+  '/about': typeof AppAboutRoute
+  '/contact': typeof AppContactRoute
+  '/firearms': typeof AppFirearmsRoute
+  '/help': typeof AppHelpRoute
+  '/home': typeof AppHomeRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/security': typeof AppSecurityRoute
+  '/settings': typeof AppSettingsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/legal/$doc': typeof LegalDocRoute
+  '/admin/': typeof AdminIndexRoute
+  '/book/$id': typeof AppBookIdRoute
+  '/book/new': typeof AppBookNewRoute
+  '/gallery/$id': typeof AppGalleryIdRoute
+  '/history/$id': typeof AppHistoryIdRoute
+  '/inspect/$id': typeof AppInspectIdRoute
+  '/inspect/new': typeof AppInspectNewRoute
+  '/messages/$id': typeof AppMessagesIdRoute
+  '/profile/edit': typeof AppProfileEditRoute
+  '/services/$id': typeof AppServicesIdRoute
+  '/book/': typeof AppBookIndexRoute
+  '/gallery/': typeof AppGalleryIndexRoute
+  '/history/': typeof AppHistoryIndexRoute
+  '/inspect/': typeof AppInspectIndexRoute
+  '/messages/': typeof AppMessagesIndexRoute
+  '/profile/': typeof AppProfileIndexRoute
+  '/request/': typeof AppRequestIndexRoute
+  '/services/': typeof AppServicesIndexRoute
+  '/book/done/$id': typeof AppBookDoneIdRoute
+  '/request/done/$id': typeof AppRequestDoneIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot': typeof ForgotRoute
+  '/forgot-sent': typeof ForgotSentRoute
+  '/lock': typeof LockRoute
+  '/lock-setup': typeof LockSetupRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
+  '/reset': typeof ResetRoute
+  '/two-factor': typeof TwoFactorRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/verify-phone': typeof VerifyPhoneRoute
+  '/welcome': typeof WelcomeRoute
+  '/about': typeof AppAboutRoute
+  '/contact': typeof AppContactRoute
+  '/firearms': typeof AppFirearmsRoute
+  '/help': typeof AppHelpRoute
+  '/home': typeof AppHomeRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/security': typeof AppSecurityRoute
+  '/settings': typeof AppSettingsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/legal/$doc': typeof LegalDocRoute
+  '/admin': typeof AdminIndexRoute
+  '/book/$id': typeof AppBookIdRoute
+  '/book/new': typeof AppBookNewRoute
+  '/gallery/$id': typeof AppGalleryIdRoute
+  '/history/$id': typeof AppHistoryIdRoute
+  '/inspect/$id': typeof AppInspectIdRoute
+  '/inspect/new': typeof AppInspectNewRoute
+  '/messages/$id': typeof AppMessagesIdRoute
+  '/profile/edit': typeof AppProfileEditRoute
+  '/services/$id': typeof AppServicesIdRoute
+  '/book': typeof AppBookIndexRoute
+  '/gallery': typeof AppGalleryIndexRoute
+  '/history': typeof AppHistoryIndexRoute
+  '/inspect': typeof AppInspectIndexRoute
+  '/messages': typeof AppMessagesIndexRoute
+  '/profile': typeof AppProfileIndexRoute
+  '/request': typeof AppRequestIndexRoute
+  '/services': typeof AppServicesIndexRoute
+  '/book/done/$id': typeof AppBookDoneIdRoute
+  '/request/done/$id': typeof AppRequestDoneIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/forgot': typeof ForgotRoute
+  '/forgot-sent': typeof ForgotSentRoute
+  '/lock': typeof LockRoute
+  '/lock-setup': typeof LockSetupRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
+  '/reset': typeof ResetRoute
+  '/two-factor': typeof TwoFactorRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/verify-phone': typeof VerifyPhoneRoute
+  '/welcome': typeof WelcomeRoute
+  '/_app/about': typeof AppAboutRoute
+  '/_app/contact': typeof AppContactRoute
+  '/_app/firearms': typeof AppFirearmsRoute
+  '/_app/help': typeof AppHelpRoute
+  '/_app/home': typeof AppHomeRoute
+  '/_app/notifications': typeof AppNotificationsRoute
+  '/_app/security': typeof AppSecurityRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/legal/$doc': typeof LegalDocRoute
+  '/admin/': typeof AdminIndexRoute
+  '/_app/book/$id': typeof AppBookIdRoute
+  '/_app/book/new': typeof AppBookNewRoute
+  '/_app/gallery/$id': typeof AppGalleryIdRoute
+  '/_app/history/$id': typeof AppHistoryIdRoute
+  '/_app/inspect/$id': typeof AppInspectIdRoute
+  '/_app/inspect/new': typeof AppInspectNewRoute
+  '/_app/messages/$id': typeof AppMessagesIdRoute
+  '/_app/profile/edit': typeof AppProfileEditRoute
+  '/_app/services/$id': typeof AppServicesIdRoute
+  '/_app/book/': typeof AppBookIndexRoute
+  '/_app/gallery/': typeof AppGalleryIndexRoute
+  '/_app/history/': typeof AppHistoryIndexRoute
+  '/_app/inspect/': typeof AppInspectIndexRoute
+  '/_app/messages/': typeof AppMessagesIndexRoute
+  '/_app/profile/': typeof AppProfileIndexRoute
+  '/_app/request/': typeof AppRequestIndexRoute
+  '/_app/services/': typeof AppServicesIndexRoute
+  '/_app/book/done/$id': typeof AppBookDoneIdRoute
+  '/_app/request/done/$id': typeof AppRequestDoneIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/forgot'
+    | '/forgot-sent'
+    | '/lock'
+    | '/lock-setup'
+    | '/login'
+    | '/onboarding'
+    | '/register'
+    | '/reset'
+    | '/two-factor'
+    | '/verify-email'
+    | '/verify-phone'
+    | '/welcome'
+    | '/about'
+    | '/contact'
+    | '/firearms'
+    | '/help'
+    | '/home'
+    | '/notifications'
+    | '/security'
+    | '/settings'
+    | '/admin/login'
+    | '/legal/$doc'
+    | '/admin/'
+    | '/book/$id'
+    | '/book/new'
+    | '/gallery/$id'
+    | '/history/$id'
+    | '/inspect/$id'
+    | '/inspect/new'
+    | '/messages/$id'
+    | '/profile/edit'
+    | '/services/$id'
+    | '/book/'
+    | '/gallery/'
+    | '/history/'
+    | '/inspect/'
+    | '/messages/'
+    | '/profile/'
+    | '/request/'
+    | '/services/'
+    | '/book/done/$id'
+    | '/request/done/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/forgot'
+    | '/forgot-sent'
+    | '/lock'
+    | '/lock-setup'
+    | '/login'
+    | '/onboarding'
+    | '/register'
+    | '/reset'
+    | '/two-factor'
+    | '/verify-email'
+    | '/verify-phone'
+    | '/welcome'
+    | '/about'
+    | '/contact'
+    | '/firearms'
+    | '/help'
+    | '/home'
+    | '/notifications'
+    | '/security'
+    | '/settings'
+    | '/admin/login'
+    | '/legal/$doc'
+    | '/admin'
+    | '/book/$id'
+    | '/book/new'
+    | '/gallery/$id'
+    | '/history/$id'
+    | '/inspect/$id'
+    | '/inspect/new'
+    | '/messages/$id'
+    | '/profile/edit'
+    | '/services/$id'
+    | '/book'
+    | '/gallery'
+    | '/history'
+    | '/inspect'
+    | '/messages'
+    | '/profile'
+    | '/request'
+    | '/services'
+    | '/book/done/$id'
+    | '/request/done/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/forgot'
+    | '/forgot-sent'
+    | '/lock'
+    | '/lock-setup'
+    | '/login'
+    | '/onboarding'
+    | '/register'
+    | '/reset'
+    | '/two-factor'
+    | '/verify-email'
+    | '/verify-phone'
+    | '/welcome'
+    | '/_app/about'
+    | '/_app/contact'
+    | '/_app/firearms'
+    | '/_app/help'
+    | '/_app/home'
+    | '/_app/notifications'
+    | '/_app/security'
+    | '/_app/settings'
+    | '/admin/login'
+    | '/legal/$doc'
+    | '/admin/'
+    | '/_app/book/$id'
+    | '/_app/book/new'
+    | '/_app/gallery/$id'
+    | '/_app/history/$id'
+    | '/_app/inspect/$id'
+    | '/_app/inspect/new'
+    | '/_app/messages/$id'
+    | '/_app/profile/edit'
+    | '/_app/services/$id'
+    | '/_app/book/'
+    | '/_app/gallery/'
+    | '/_app/history/'
+    | '/_app/inspect/'
+    | '/_app/messages/'
+    | '/_app/profile/'
+    | '/_app/request/'
+    | '/_app/services/'
+    | '/_app/book/done/$id'
+    | '/_app/request/done/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  ForgotRoute: typeof ForgotRoute
+  ForgotSentRoute: typeof ForgotSentRoute
+  LockRoute: typeof LockRoute
+  LockSetupRoute: typeof LockSetupRoute
+  LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
+  RegisterRoute: typeof RegisterRoute
+  ResetRoute: typeof ResetRoute
+  TwoFactorRoute: typeof TwoFactorRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
+  VerifyPhoneRoute: typeof VerifyPhoneRoute
+  WelcomeRoute: typeof WelcomeRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  LegalDocRoute: typeof LegalDocRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +579,390 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot': {
+      id: '/forgot'
+      path: '/forgot'
+      fullPath: '/forgot'
+      preLoaderRoute: typeof ForgotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-sent': {
+      id: '/forgot-sent'
+      path: '/forgot-sent'
+      fullPath: '/forgot-sent'
+      preLoaderRoute: typeof ForgotSentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lock': {
+      id: '/lock'
+      path: '/lock'
+      fullPath: '/lock'
+      preLoaderRoute: typeof LockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lock-setup': {
+      id: '/lock-setup'
+      path: '/lock-setup'
+      fullPath: '/lock-setup'
+      preLoaderRoute: typeof LockSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset': {
+      id: '/reset'
+      path: '/reset'
+      fullPath: '/reset'
+      preLoaderRoute: typeof ResetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/two-factor': {
+      id: '/two-factor'
+      path: '/two-factor'
+      fullPath: '/two-factor'
+      preLoaderRoute: typeof TwoFactorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify-phone': {
+      id: '/verify-phone'
+      path: '/verify-phone'
+      fullPath: '/verify-phone'
+      preLoaderRoute: typeof VerifyPhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/about': {
+      id: '/_app/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AppAboutRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/contact': {
+      id: '/_app/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof AppContactRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/firearms': {
+      id: '/_app/firearms'
+      path: '/firearms'
+      fullPath: '/firearms'
+      preLoaderRoute: typeof AppFirearmsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/help': {
+      id: '/_app/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof AppHelpRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/home': {
+      id: '/_app/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AppHomeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/security': {
+      id: '/_app/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof AppSecurityRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/$doc': {
+      id: '/legal/$doc'
+      path: '/legal/$doc'
+      fullPath: '/legal/$doc'
+      preLoaderRoute: typeof LegalDocRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/book/': {
+      id: '/_app/book/'
+      path: '/book'
+      fullPath: '/book/'
+      preLoaderRoute: typeof AppBookIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/book/$id': {
+      id: '/_app/book/$id'
+      path: '/book/$id'
+      fullPath: '/book/$id'
+      preLoaderRoute: typeof AppBookIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/book/new': {
+      id: '/_app/book/new'
+      path: '/book/new'
+      fullPath: '/book/new'
+      preLoaderRoute: typeof AppBookNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/gallery/': {
+      id: '/_app/gallery/'
+      path: '/gallery'
+      fullPath: '/gallery/'
+      preLoaderRoute: typeof AppGalleryIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/gallery/$id': {
+      id: '/_app/gallery/$id'
+      path: '/gallery/$id'
+      fullPath: '/gallery/$id'
+      preLoaderRoute: typeof AppGalleryIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/history/': {
+      id: '/_app/history/'
+      path: '/history'
+      fullPath: '/history/'
+      preLoaderRoute: typeof AppHistoryIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/history/$id': {
+      id: '/_app/history/$id'
+      path: '/history/$id'
+      fullPath: '/history/$id'
+      preLoaderRoute: typeof AppHistoryIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/inspect/': {
+      id: '/_app/inspect/'
+      path: '/inspect'
+      fullPath: '/inspect/'
+      preLoaderRoute: typeof AppInspectIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/inspect/$id': {
+      id: '/_app/inspect/$id'
+      path: '/inspect/$id'
+      fullPath: '/inspect/$id'
+      preLoaderRoute: typeof AppInspectIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/inspect/new': {
+      id: '/_app/inspect/new'
+      path: '/inspect/new'
+      fullPath: '/inspect/new'
+      preLoaderRoute: typeof AppInspectNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/messages/': {
+      id: '/_app/messages/'
+      path: '/messages'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof AppMessagesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/messages/$id': {
+      id: '/_app/messages/$id'
+      path: '/messages/$id'
+      fullPath: '/messages/$id'
+      preLoaderRoute: typeof AppMessagesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile/': {
+      id: '/_app/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AppProfileIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile/edit': {
+      id: '/_app/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof AppProfileEditRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/request/': {
+      id: '/_app/request/'
+      path: '/request'
+      fullPath: '/request/'
+      preLoaderRoute: typeof AppRequestIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/services/': {
+      id: '/_app/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof AppServicesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/services/$id': {
+      id: '/_app/services/$id'
+      path: '/services/$id'
+      fullPath: '/services/$id'
+      preLoaderRoute: typeof AppServicesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/book/done/$id': {
+      id: '/_app/book/done/$id'
+      path: '/book/done/$id'
+      fullPath: '/book/done/$id'
+      preLoaderRoute: typeof AppBookDoneIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/request/done/$id': {
+      id: '/_app/request/done/$id'
+      path: '/request/done/$id'
+      fullPath: '/request/done/$id'
+      preLoaderRoute: typeof AppRequestDoneIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAboutRoute: typeof AppAboutRoute
+  AppContactRoute: typeof AppContactRoute
+  AppFirearmsRoute: typeof AppFirearmsRoute
+  AppHelpRoute: typeof AppHelpRoute
+  AppHomeRoute: typeof AppHomeRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppSecurityRoute: typeof AppSecurityRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppBookIdRoute: typeof AppBookIdRoute
+  AppBookNewRoute: typeof AppBookNewRoute
+  AppGalleryIdRoute: typeof AppGalleryIdRoute
+  AppHistoryIdRoute: typeof AppHistoryIdRoute
+  AppInspectIdRoute: typeof AppInspectIdRoute
+  AppInspectNewRoute: typeof AppInspectNewRoute
+  AppMessagesIdRoute: typeof AppMessagesIdRoute
+  AppProfileEditRoute: typeof AppProfileEditRoute
+  AppServicesIdRoute: typeof AppServicesIdRoute
+  AppBookIndexRoute: typeof AppBookIndexRoute
+  AppGalleryIndexRoute: typeof AppGalleryIndexRoute
+  AppHistoryIndexRoute: typeof AppHistoryIndexRoute
+  AppInspectIndexRoute: typeof AppInspectIndexRoute
+  AppMessagesIndexRoute: typeof AppMessagesIndexRoute
+  AppProfileIndexRoute: typeof AppProfileIndexRoute
+  AppRequestIndexRoute: typeof AppRequestIndexRoute
+  AppServicesIndexRoute: typeof AppServicesIndexRoute
+  AppBookDoneIdRoute: typeof AppBookDoneIdRoute
+  AppRequestDoneIdRoute: typeof AppRequestDoneIdRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAboutRoute: AppAboutRoute,
+  AppContactRoute: AppContactRoute,
+  AppFirearmsRoute: AppFirearmsRoute,
+  AppHelpRoute: AppHelpRoute,
+  AppHomeRoute: AppHomeRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppSecurityRoute: AppSecurityRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppBookIdRoute: AppBookIdRoute,
+  AppBookNewRoute: AppBookNewRoute,
+  AppGalleryIdRoute: AppGalleryIdRoute,
+  AppHistoryIdRoute: AppHistoryIdRoute,
+  AppInspectIdRoute: AppInspectIdRoute,
+  AppInspectNewRoute: AppInspectNewRoute,
+  AppMessagesIdRoute: AppMessagesIdRoute,
+  AppProfileEditRoute: AppProfileEditRoute,
+  AppServicesIdRoute: AppServicesIdRoute,
+  AppBookIndexRoute: AppBookIndexRoute,
+  AppGalleryIndexRoute: AppGalleryIndexRoute,
+  AppHistoryIndexRoute: AppHistoryIndexRoute,
+  AppInspectIndexRoute: AppInspectIndexRoute,
+  AppMessagesIndexRoute: AppMessagesIndexRoute,
+  AppProfileIndexRoute: AppProfileIndexRoute,
+  AppRequestIndexRoute: AppRequestIndexRoute,
+  AppServicesIndexRoute: AppServicesIndexRoute,
+  AppBookDoneIdRoute: AppBookDoneIdRoute,
+  AppRequestDoneIdRoute: AppRequestDoneIdRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  ForgotRoute: ForgotRoute,
+  ForgotSentRoute: ForgotSentRoute,
+  LockRoute: LockRoute,
+  LockSetupRoute: LockSetupRoute,
+  LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
+  RegisterRoute: RegisterRoute,
+  ResetRoute: ResetRoute,
+  TwoFactorRoute: TwoFactorRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
+  VerifyPhoneRoute: VerifyPhoneRoute,
+  WelcomeRoute: WelcomeRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  LegalDocRoute: LegalDocRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
