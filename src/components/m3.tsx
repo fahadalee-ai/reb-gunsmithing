@@ -350,7 +350,7 @@ export function ConfirmDialog({
 }) {
   if (!open) return null;
   return (
-    <div className="absolute inset-0 z-50 grid place-items-center bg-black/55 px-6" role="presentation">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 px-6" role="presentation">
       <div role="dialog" aria-modal aria-labelledby="dlg-title" className="w-full max-w-sm rounded-[28px] bg-surface-high p-6">
         <h2 id="dlg-title" className="text-[24px]">
           {title}

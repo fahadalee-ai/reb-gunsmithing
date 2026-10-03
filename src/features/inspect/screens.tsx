@@ -4,6 +4,7 @@ import { CheckRow, ConfirmDialog, EmptyState, MButton, MCard, PageBanner, Progre
 import { ANGLES, DISCLAIMER, SAFETY_REMINDER } from "@/lib/business";
 import { analyzeVisibleCondition } from "@/lib/ai";
 import { brightnessFromCanvas } from "@/lib/media";
+import { formatWhen } from "@/lib/slots";
 import { useStore } from "@/lib/store";
 import { asset } from "@/lib/utils";
 import type { AIReport, Inspection, MediaRef } from "@/lib/types";
@@ -244,65 +245,76 @@ export function InspectFlowScreen() {
           </div>
         )}
         {phase === "review" && (
-          <div className="flex min-h-full flex-col">
+          <div>
             <TopBar title="Review" back={() => setPhase("capture")} />
-            <div className="grid gap-4 px-4 pb-4">
-              <p className="text-[15px] leading-6 text-[#d7e0ea]">Check each photo, add a short note, then continue.</p>
-              {captures.map((item) => (
-                <article key={item.id} className="overflow-hidden border border-[#3d4a5c] bg-[var(--surface-low)]">
-                  <div className="relative">
-                    {item.kind === "video" ? (
-                      <video src={item.src} className="h-56 w-full bg-black object-cover" controls />
-                    ) : (
-                      <img src={item.src} alt={item.angle} className="h-56 w-full object-cover" />
-                    )}
-                    <span className="absolute bottom-3 left-3 bg-black/75 px-2.5 py-1 text-[13px] font-medium text-white">{item.angle}</span>
-                  </div>
-                  <div className="grid gap-3 p-3">
-                    <label className="grid gap-1.5 text-[13px] font-medium text-[#d7e0ea]">
-                      Note
-                      <input
-                        className="h-12 w-full border border-[#9eb6d4] bg-[#0e1218] px-3 text-[16px] text-white outline-none focus:border-2 focus:border-primary"
-                        placeholder="What should the shop notice?"
-                        value={item.caption}
-                        onChange={(e) => setCaptures((list) => list.map((c) => (c.id === item.id ? { ...c, caption: e.target.value } : c)))}
-                      />
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        className="h-12 border border-[#9eb6d4] text-[14px] font-medium text-white"
-                        onClick={() => {
-                          setAngle(Math.max(0, ANGLES.findIndex((a) => a.label === item.angle)));
-                          setPhase("capture");
-                        }}
-                      >
-                        Retake
-                      </button>
-                      <button
-                        type="button"
-                        className="h-12 border border-[#ff8a80] text-[14px] font-medium text-[#ffb4ab]"
-                        onClick={() => setDeleteId(item.id)}
-                      >
-                        Delete
-                      </button>
+            <div className="px-4 pt-1 pb-8">
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">
+                {captures.length} {captures.length === 1 ? "capture" : "captures"}
+              </p>
+              <p className="mt-1 text-[16px] leading-6 text-white">Check each photo and leave a note for the shop.</p>
+              <div className="mt-4 grid gap-5">
+                {captures.map((item, index) => (
+                  <article key={item.id} className="overflow-hidden border border-[#3d4a5c] bg-[var(--surface-low)]">
+                    <div className="relative">
+                      {item.kind === "video" ? (
+                        <video src={item.src} className="aspect-[4/3] w-full bg-black object-cover" controls />
+                      ) : (
+                        <img src={item.src} alt={item.angle} className="aspect-[4/3] w-full object-cover" />
+                      )}
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent px-3 pt-8 pb-3">
+                        <p className="text-[11px] font-semibold tracking-[0.14em] text-tertiary uppercase">
+                          {index + 1} of {captures.length}
+                        </p>
+                        <p className="text-[18px] font-medium text-white">{item.angle}</p>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
-              <div className="grid gap-1 border border-[#3d4a5c] bg-[var(--surface-low)] px-3 py-2">
+                    <div className="grid gap-3 p-3">
+                      <label className="grid gap-1.5 text-left text-[13px] font-medium text-[#d7e0ea]">
+                        Note for the shop
+                        <input
+                          className="h-12 w-full border border-[#9eb6d4] bg-[#0e1218] px-3 text-left text-[16px] text-white outline-none placeholder:text-[#9aa8b8] focus:border-2 focus:border-primary"
+                          placeholder="Wear, finish, or anything to look at"
+                          value={item.caption}
+                          onChange={(e) => setCaptures((list) => list.map((c) => (c.id === item.id ? { ...c, caption: e.target.value } : c)))}
+                        />
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          className="h-12 border border-[#9eb6d4] text-[14px] font-medium text-white"
+                          onClick={() => {
+                            setAngle(Math.max(0, ANGLES.findIndex((a) => a.label === item.angle)));
+                            setPhase("capture");
+                          }}
+                        >
+                          Retake
+                        </button>
+                        <button
+                          type="button"
+                          className="h-12 border border-[#ff8a80] text-[14px] font-medium text-[#ffb4ab]"
+                          onClick={() => setDeleteId(item.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <section className="mt-5 border border-[#3d4a5c] bg-[var(--surface-low)] px-3 py-2">
+                <p className="px-1 pt-2 text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Before you continue</p>
                 <CheckRow checked={flags.notFirearm} onChange={(notFirearm) => setFlags((f) => ({ ...f, notFirearm }))}>
                   This does not show a firearm
                 </CheckRow>
                 <CheckRow checked={flags.person} onChange={(person) => setFlags((f) => ({ ...f, person }))}>
                   A person or face is in frame
                 </CheckRow>
+              </section>
+              <div className="mt-5">
+                <MButton full onClick={analyze} disabled={!captures.length}>
+                  Analyze visible condition
+                </MButton>
               </div>
-            </div>
-            <div className="sticky bottom-0 mt-auto border-t border-[#3d4a5c] bg-[var(--surface)] px-4 py-3">
-              <MButton full onClick={analyze} disabled={!captures.length}>
-                Analyze visible condition
-              </MButton>
             </div>
             <ConfirmDialog
               open={Boolean(deleteId)}
@@ -326,13 +338,61 @@ export function InspectFlowScreen() {
         )}
         {phase === "result" && report && <Result report={report} captures={captures} onSend={() => setPhase("send")} disclaimer={db.ai.disclaimer || DISCLAIMER} />}
         {phase === "send" && (
-          <div className="grid gap-3 px-4 py-6">
-            <h1 className="text-[28px]">Send to the gunsmith</h1>
-            <MButton full onClick={() => persist("submitted")}>Send captures and report</MButton>
-            {db.appointments.filter((a) => a.userId === user?.id && a.status !== "cancelled").map((a) => (
-              <MButton key={a.id} full variant="tonal" onClick={() => persist("submitted", a.id)}>Attach to {a.id}</MButton>
-            ))}
-            <MButton full variant="outlined" onClick={() => { persist("submitted"); navigate({ to: "/request" }); }}>Create a service request</MButton>
+          <div className="pb-6">
+            <section className="relative h-48 overflow-hidden">
+              <img src={captures[0]?.src || asset("media/precision-work.jpg")} alt="" className="absolute inset-0 size-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0e1218] via-[#0e1218]/55 to-black/25" />
+              <div className="relative flex h-full flex-col justify-end px-5 pb-4">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">
+                  {captures.length} {captures.length === 1 ? "capture" : "captures"} ready
+                </p>
+                <h1 className="mt-1 text-[30px] leading-tight font-medium text-white">Send to the gunsmith</h1>
+              </div>
+              <span className="absolute inset-x-0 bottom-0 h-[3px] bg-tertiary" />
+            </section>
+            <div className="grid gap-4 px-4 pt-5">
+              <p className="text-[15px] leading-6 text-[#d7e0ea]">Send the photos and the visual note on their own, or attach them to a visit you already booked.</p>
+              <MButton full onClick={() => persist("submitted")}>
+                Send captures and report
+              </MButton>
+              {db.appointments.some((a) => a.userId === user?.id && a.status !== "cancelled") ? (
+                <div>
+                  <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Attach to a visit</p>
+                  <div className="mt-3 grid gap-2">
+                    {db.appointments
+                      .filter((a) => a.userId === user?.id && a.status !== "cancelled")
+                      .map((appointment) => {
+                        const service = db.services.find((item) => item.id === appointment.serviceId);
+                        return (
+                          <button
+                            key={appointment.id}
+                            type="button"
+                            className="flex items-center gap-3 border border-[#9eb6d4] bg-[var(--surface-low)] p-2 text-left"
+                            onClick={() => persist("submitted", appointment.id)}
+                          >
+                            <img src={service?.image || asset("media/hero-workshop.jpg")} alt="" className="h-16 w-16 shrink-0 object-cover" />
+                            <span className="min-w-0">
+                              <span className="block text-[11px] font-semibold tracking-[0.12em] text-tertiary uppercase">{appointment.id}</span>
+                              <span className="block text-[16px] font-medium text-white">{service?.name ?? "Appointment"}</span>
+                              <span className="block text-[13px] text-[#d7e0ea]">{formatWhen(appointment.date, appointment.time)}</span>
+                            </span>
+                          </button>
+                        );
+                      })}
+                  </div>
+                </div>
+              ) : null}
+              <button
+                type="button"
+                className="h-12 border border-[#9eb6d4] text-[14px] font-medium text-white"
+                onClick={() => {
+                  persist("submitted");
+                  navigate({ to: "/request" });
+                }}
+              >
+                Create a service request
+              </button>
+            </div>
           </div>
         )}
       </div>

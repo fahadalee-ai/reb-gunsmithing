@@ -187,7 +187,7 @@ export function OnboardingScreen() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-transparent" />
         <div className="relative flex h-full flex-col">
           <div className="flex items-center justify-between px-3 pt-3">
-            <Logo className="h-11 w-auto" />
+            <Logo className="h-20 w-auto" />
             <button type="button" className="h-11 px-3 text-[14px] font-medium text-white" onClick={() => finish("/login")}>
               Skip
             </button>
