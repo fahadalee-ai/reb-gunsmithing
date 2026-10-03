@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   CalendarClock,
   Camera,
+  ChevronDown,
   ChevronLeft,
   Home,
   MessageSquare,
@@ -9,7 +10,7 @@ import {
   UserRound,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useId, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
+import { Children, isValidElement, useEffect, useId, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import logo from "@/img/logo.png";
@@ -95,12 +96,25 @@ export function MField({ label, error, hint, id, className, trailing, ...props }
   );
 }
 
+function readOptions(children: ReactNode) {
+  const options: { value: string; label: string }[] = [];
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) return;
+    const props = child.props as { value?: string | number; children?: ReactNode };
+    const text = typeof props.children === "string" || typeof props.children === "number" ? String(props.children) : "";
+    const value = props.value === undefined ? text : String(props.value);
+    options.push({ value, label: text || value });
+  });
+  return options;
+}
+
 export function MSelect({
   label,
   value,
   error,
   hint,
   disabled,
+  className,
   onChange,
   children,
 }: {
@@ -109,28 +123,68 @@ export function MSelect({
   error?: string;
   hint?: string;
   disabled?: boolean;
+  className?: string;
   onChange: (value: string) => void;
   children: ReactNode;
 }) {
-  const id = useId();
+  const [open, setOpen] = useState(false);
+  const options = readOptions(children);
+  const selected = options.find((option) => option.value === value);
   return (
-    <div>
-      <label htmlFor={id} className={cn("mb-1 block px-1 text-[12px]", error ? "font-medium text-error" : "text-[var(--on-surface-variant)]")}>
-        {label}
-      </label>
-      <select
-        id={id}
-        value={value}
+    <div className={className}>
+      <p className={cn("mb-1 block px-1 text-[12px]", error ? "font-medium text-error" : "text-[var(--on-surface-variant)]")}>{label}</p>
+      <button
+        type="button"
         disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         aria-invalid={Boolean(error)}
-        onChange={(event) => onChange(event.target.value)}
+        onClick={() => setOpen(true)}
         className={cn(
-          "h-14 w-full border bg-surface-high px-3 text-[16px] text-foreground outline-none disabled:opacity-40",
-          error ? "border-2 border-error" : "border-outline focus:border-2 focus:border-primary",
+          "flex h-14 w-full items-center justify-between gap-3 border bg-surface-high px-3 text-left text-[16px] text-foreground disabled:opacity-40",
+          error ? "border-2 border-error" : "border-outline",
         )}
       >
-        {children}
-      </select>
+        <span className="truncate">{selected?.label || "Select"}</span>
+        <ChevronDown className="size-5 shrink-0 text-[#d7e0ea]" aria-hidden />
+      </button>
+      {open ? (
+        <div className="fixed inset-0 z-[80] flex items-end justify-center bg-black/60" onClick={() => setOpen(false)}>
+          <div
+            role="listbox"
+            aria-label={label}
+            className="flex max-h-[70dvh] w-full max-w-[480px] flex-col bg-[#1c2430]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-[#3d4a5c] px-4 py-3">
+              <p className="text-[16px] font-medium text-white">{label}</p>
+              <button type="button" className="h-11 px-2 font-medium text-tertiary" onClick={() => setOpen(false)}>
+                Close
+              </button>
+            </div>
+            <div className="overflow-y-auto">
+              {options.map((option) => (
+                <button
+                  key={`${option.value}:${option.label}`}
+                  type="button"
+                  role="option"
+                  aria-selected={option.value === value}
+                  className={cn(
+                    "flex min-h-14 w-full items-center px-4 text-left text-[16px]",
+                    option.value === value ? "bg-primary text-white" : "text-white",
+                  )}
+                  onClick={() => {
+                    onChange(option.value);
+                    setOpen(false);
+                  }}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
       {error ? <p className="mt-1 px-1 text-[12px] font-medium text-error">{error}</p> : hint ? <p className="mt-1 px-1 text-[12px] text-[var(--on-surface-variant)]">{hint}</p> : null}
     </div>
   );

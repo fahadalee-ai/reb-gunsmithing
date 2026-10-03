@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useEffect, useMemo, useState } from "react";
-import { Logo, MButton, MField, StatusChip } from "@/components/m3";
+import { Logo, MButton, MField, MSelect, StatusChip } from "@/components/m3";
 import { asset } from "@/lib/utils";
 import { CANNED_REPLIES, TIMEZONE } from "@/lib/business";
 import { DEMO_ADMIN } from "@/lib/seed";
@@ -213,12 +213,12 @@ function Appointments({ query }: { query: string }) {
         {(["list", "day", "week", "month"] as const).map((item) => (
           <button key={item} type="button" className="h-10 rounded-lg border border-outline px-3 capitalize" onClick={() => setView(item)}>{item}</button>
         ))}
-        <select aria-label="Status filter" className="h-10 rounded-lg border border-outline bg-transparent px-2" value={status} onChange={(e) => setStatus(e.target.value)}>
-          {["all", "pending", "confirmed", "in_progress", "ready", "completed", "cancelled"].map((item) => <option key={item}>{item}</option>)}
-        </select>
-        <select aria-label="Service filter" className="h-10 rounded-lg border border-outline bg-transparent px-2" value={service} onChange={(e) => setService(e.target.value)}>
-          {["all", "cleaning", "repair", "inspection", "appraisal"].map((item) => <option key={item}>{item}</option>)}
-        </select>
+        <MSelect className="min-w-44 flex-1" label="Status" value={status} onChange={setStatus}>
+          {["all", "pending", "confirmed", "in_progress", "ready", "completed", "cancelled"].map((item) => <option key={item} value={item}>{item}</option>)}
+        </MSelect>
+        <MSelect className="min-w-44 flex-1" label="Service" value={service} onChange={setService}>
+          {["all", "cleaning", "repair", "inspection", "appraisal"].map((item) => <option key={item} value={item}>{item}</option>)}
+        </MSelect>
       </div>
       {view !== "list" ? <CalendarView mode={view} /> : null}
       {rows.map((appt) => {
@@ -233,12 +233,9 @@ function Appointments({ query }: { query: string }) {
               </div>
               <StatusChip status={appt.status} />
             </div>
-            <label className="mt-3 block text-[13px]">
-              Status
-              <select className="mt-1 h-12 w-full rounded-xl border border-outline bg-transparent px-3" value={appt.status} onChange={(e) => setAppointmentStatus(appt.id, e.target.value as ApptStatus, "Updated by staff")}>
-                {["pending", "confirmed", "in_progress", "ready", "completed", "cancelled"].map((item) => <option key={item} value={item}>{item}</option>)}
-              </select>
-            </label>
+            <MSelect className="mt-3" label="Status" value={appt.status} onChange={(next) => setAppointmentStatus(appt.id, next as ApptStatus, "Updated by staff")}>
+              {["pending", "confirmed", "in_progress", "ready", "completed", "cancelled"].map((item) => <option key={item} value={item}>{item}</option>)}
+            </MSelect>
             <label className="mt-2 block text-[13px]">
               Internal note to the customer
               <textarea className="mt-1 min-h-20 w-full rounded-xl border border-outline bg-transparent p-3" value={notes[appt.id] ?? appt.gunsmithNotes} onChange={(e) => setNotes((n) => ({ ...n, [appt.id]: e.target.value }))} />
@@ -322,9 +319,9 @@ function Requests({ query }: { query: string }) {
           <p className="text-[13px] text-[var(--on-surface-variant)]">Contact by {request.contactMethod} · {request.urgency}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <MButton onClick={() => setRequestStatus(request.id, "quoted", "Quote prepared in the shop.")}>Send quote</MButton>
-            <select aria-label="Request status" className="h-12 rounded-xl border border-outline bg-transparent px-3" value={request.status} onChange={(e) => setRequestStatus(request.id, e.target.value as RequestStatus)}>
-              {["submitted", "reviewing", "quoted", "scheduled", "closed"].map((item) => <option key={item}>{item}</option>)}
-            </select>
+            <MSelect className="min-w-44 flex-1" label="Status" value={request.status} onChange={(next) => setRequestStatus(request.id, next as RequestStatus)}>
+              {["submitted", "reviewing", "quoted", "scheduled", "closed"].map((item) => <option key={item} value={item}>{item}</option>)}
+            </MSelect>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-12 rounded-xl border border-outline bg-transparent px-3" aria-label="Convert date" />
@@ -383,11 +380,9 @@ function Inspections() {
               <textarea className="mt-1 min-h-16 w-full rounded-xl border border-outline bg-transparent p-3" value={form[key]} onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))} />
             </label>
           ))}
-          <label className="text-[13px]">Recommended service
-            <select className="mt-1 h-12 w-full rounded-xl border border-outline bg-transparent px-3" value={form.recommendedServiceId} onChange={(e) => setForm((f) => ({ ...f, recommendedServiceId: e.target.value as ServiceId }))}>
-              {db.services.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-            </select>
-          </label>
+          <MSelect label="Recommended service" value={form.recommendedServiceId} onChange={(next) => setForm((f) => ({ ...f, recommendedServiceId: next as ServiceId }))}>
+            {db.services.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+          </MSelect>
           <MButton onClick={() => saveAssessment(item.id, { ...form, author: `${admin?.firstName} ${admin?.lastName}`, sentAt: new Date().toISOString() }, true)}>Send assessment to customer</MButton>
         </div>
       ) : null}
@@ -469,15 +464,15 @@ function Documents() {
   return (
     <div className="grid max-w-xl gap-3">
       <h1 className="text-[32px]">Appraisals and documents</h1>
-      <select aria-label="Customer" className="h-12 rounded-xl border border-outline bg-transparent px-3" value={userId} onChange={(e) => setUserId(e.target.value)}>
+      <MSelect label="Customer" value={userId} onChange={setUserId}>
         {db.users.filter((u) => u.role === "customer").map((u) => <option key={u.id} value={u.id}>{u.firstName} {u.lastName}</option>)}
-      </select>
+      </MSelect>
       <MField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <select aria-label="Document type" className="h-12 rounded-xl border border-outline bg-transparent px-3" value={kind} onChange={(e) => setKind(e.target.value as typeof kind)}>
+      <MSelect label="Document type" value={kind} onChange={(next) => setKind(next as typeof kind)}>
         <option value="appraisal">Appraisal</option>
         <option value="invoice">Invoice</option>
         <option value="receipt">Receipt</option>
-      </select>
+      </MSelect>
       <textarea className="min-h-28 rounded-xl border border-outline bg-transparent p-3" value={body} onChange={(e) => setBody(e.target.value)} aria-label="Document text" />
       <MButton onClick={() => addDocument({ userId, kind, title, date: new Date().toISOString().slice(0, 10), lines: body.split("\n") })}>Upload to customer history</MButton>
       <ul className="text-[14px]">{db.documents.map((doc) => <li key={doc.id}>{doc.id} · {doc.title}</li>)}</ul>
@@ -567,10 +562,10 @@ function Staff() {
       <MField label="First name" value={first} onChange={(e) => setFirst(e.target.value)} />
       <MField label="Last name" value={last} onChange={(e) => setLast(e.target.value)} />
       <MField label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <select aria-label="Role" className="h-12 rounded-xl border border-outline bg-transparent px-3" value={role} onChange={(e) => setRole(e.target.value as "gunsmith" | "staff")}>
+      <MSelect label="Role" value={role} onChange={(next) => setRole(next as "gunsmith" | "staff")}>
         <option value="staff">Staff</option>
         <option value="gunsmith">Gunsmith</option>
-      </select>
+      </MSelect>
       <MButton onClick={() => pushToast(addStaff({ firstName: first, lastName: last, email, phone: "", password: "ChangeMe1", role }) ? "Staff account added" : "That email is already used")}>Add staff</MButton>
     </div>
   );
