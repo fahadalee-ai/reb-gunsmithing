@@ -406,8 +406,8 @@ export function ProfileScreen() {
     <div className="pb-6">
       <section className="relative h-44 overflow-hidden">
         <img src={asset("media/about-hero.jpg")} alt="" className="absolute inset-0 size-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/45 to-[#0e1218]" />
-        <div className="relative flex h-full items-end gap-3 px-4 pb-4">
+        <div className="banner-scrim absolute inset-0" />
+        <div className="banner-copy relative flex h-full items-end gap-3 px-4 pb-4">
           <span className="grid size-14 shrink-0 place-items-center bg-primary text-[18px] font-medium text-primary-foreground">
             {user.firstName[0]}
             {user.lastName[0]}
@@ -417,7 +417,7 @@ export function ProfileScreen() {
             <span className="block truncate text-[26px] leading-tight font-medium text-white">
               {user.firstName} {user.lastName}
             </span>
-            <span className="block truncate text-[13px] text-white/75">{user.email}</span>
+            <span className="block truncate text-[15px] text-white">{user.email}</span>
           </span>
         </div>
         <span className="absolute inset-x-0 bottom-0 h-[3px] bg-tertiary" />

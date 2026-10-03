@@ -43,8 +43,8 @@ export function ServiceDetailScreen() {
     <div className="pb-8">
       <section className="relative h-56 overflow-hidden">
         <img src={service.image} alt="" className="absolute inset-0 size-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/20 to-[#0e1218]" />
-        <div className="relative z-10 flex h-full flex-col px-1 pt-1 pb-4">
+        <div className="banner-scrim absolute inset-0" />
+        <div className="banner-copy relative z-10 flex h-full flex-col px-1 pt-1 pb-4">
           <button type="button" className="inline-flex h-12 w-fit items-center gap-0.5 px-2 text-[16px] font-medium text-white" onClick={() => navigate({ to: "/services" })}>
             <ChevronLeft className="pointer-events-none size-6" aria-hidden /> Back
           </button>

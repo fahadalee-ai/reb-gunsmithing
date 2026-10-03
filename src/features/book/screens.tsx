@@ -86,8 +86,8 @@ export function AppointmentDetailScreen() {
     <div className="pb-4">
       <section className="relative h-52 overflow-hidden">
         <img src={service?.image || asset("media/hero-workshop.jpg")} alt="" className="absolute inset-0 size-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#0e1218]" />
-        <div className="relative z-10 flex h-full flex-col px-2 pt-2 pb-4">
+        <div className="banner-scrim absolute inset-0" />
+        <div className="banner-copy relative z-10 flex h-full flex-col px-2 pt-2 pb-4">
           <button type="button" className="relative z-10 inline-flex h-11 w-fit items-center gap-0.5 px-2 text-[14px] font-medium text-white" onClick={() => navigate({ to: "/book" })}>
             <ChevronLeft className="size-5" aria-hidden /> Back
           </button>

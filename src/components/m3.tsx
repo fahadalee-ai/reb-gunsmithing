@@ -491,12 +491,12 @@ export function PageBanner({
   return (
     <section className="relative h-36 overflow-hidden">
       <img src={image} alt="" className="absolute inset-0 size-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/45 to-[#0e1218]" />
-      <div className="relative flex h-full items-end justify-between gap-3 px-4 pb-4">
+      <div className="banner-scrim absolute inset-0" />
+      <div className="banner-copy relative flex h-full items-end justify-between gap-3 px-4 pb-4">
         <div className="min-w-0">
           <p className="text-[11px] font-semibold tracking-[0.18em] text-tertiary uppercase">{kicker}</p>
           <h1 className="mt-1 text-[30px] leading-none font-medium tracking-tight text-white">{title}</h1>
-          {subtitle ? <p className="mt-2 line-clamp-2 text-[13px] leading-5 text-white/80">{subtitle}</p> : null}
+          {subtitle ? <p className="mt-2 line-clamp-2 text-[15px] leading-5 text-white">{subtitle}</p> : null}
         </div>
         {action}
       </div>

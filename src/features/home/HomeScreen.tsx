@@ -30,8 +30,8 @@ export function HomeScreen() {
     <div className="pb-4">
       <section className="relative h-[18rem] overflow-hidden">
         <img src={hero} alt="" className="absolute inset-0 size-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/25 to-[#0e1218]" />
-        <div className="relative flex h-full flex-col px-4 pt-3 pb-5">
+        <div className="banner-scrim absolute inset-0" />
+        <div className="banner-copy relative flex h-full flex-col px-4 pt-3 pb-5">
           <div className="flex items-center justify-between">
             <Logo className="h-12 w-auto" />
             <Link
@@ -50,7 +50,7 @@ export function HomeScreen() {
               <div className="mt-2">
                 <StatusChip status={upcoming.status} />
                 <p className="mt-2 text-[20px] font-medium text-white">{service.name}</p>
-                <p className="text-[14px] text-white/85">
+                <p className="text-[16px] text-white">
                   {upcoming.make} {upcoming.model} · {formatWhen(upcoming.date, upcoming.time)}
                 </p>
                 <div className="mt-3 flex gap-2">
@@ -64,7 +64,7 @@ export function HomeScreen() {
               </div>
             ) : (
               <div className="mt-3">
-                <p className="max-w-xs text-[15px] leading-6 text-white/85">Nothing on the calendar. Book cleaning, repair, inspection, or an appraisal.</p>
+                <p className="max-w-xs text-[16px] leading-6 text-white">Nothing on the calendar. Book cleaning, repair, inspection, or an appraisal.</p>
                 <MButton className="mt-3 h-10" onClick={() => navigate({ to: "/book/new" })}>
                   Book now
                 </MButton>
