@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { scrollAppToTop } from "@/components/shell";
 import { CheckRow, ConfirmDialog, EmptyState, MButton, MCard, PageBanner, Progress, SecureSurface, StatusChip, TopBar } from "@/components/m3";
 import { ANGLES, DISCLAIMER, SAFETY_REMINDER } from "@/lib/business";
 import { analyzeVisibleCondition } from "@/lib/ai";
@@ -61,6 +62,10 @@ export function InspectFlowScreen() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
   const current = ANGLES[angle];
+
+  useLayoutEffect(() => {
+    scrollAppToTop();
+  }, [phase]);
 
   useEffect(() => {
     return () => {

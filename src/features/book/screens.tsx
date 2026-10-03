@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { format } from "date-fns";
 import { ChevronLeft } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
+import { scrollAppToTop } from "@/components/shell";
 import { FirearmFields } from "@/components/FirearmFields";
 import { CheckRow, ConfirmDialog, EmptyState, MArea, MButton, MCard, MChip, MField, MSelect, PageBanner, Progress, Sheet, StatusChip, TopBar } from "@/components/m3";
 import { validateFirearm, validateSerial } from "@/lib/firearms";
@@ -215,6 +216,9 @@ export function BookFlowScreen() {
   const dates = useMemo(() => upcomingDates(16), []);
   const slots = date ? timeSlots(date, db.availability, db.appointments) : [];
   const service = db.services.find((s) => s.id === serviceId);
+  useLayoutEffect(() => {
+    scrollAppToTop();
+  }, [step]);
 
   const next = () => {
     const nextErrors: Record<string, string> = {};
