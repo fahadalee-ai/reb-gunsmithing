@@ -22,7 +22,7 @@ export function InspectListScreen() {
       <p className="mx-4 mt-4 border-l-[3px] border-tertiary bg-[var(--surface-low)] px-3 py-3 text-[13px] leading-5">{SAFETY_REMINDER}</p>
       <div className="grid gap-3 px-4 py-4">
         {list.length === 0 ? (
-          <EmptyState title="No inspections yet" body="A guided camera captures exterior photos for a preliminary visual assessment." action={<MButton onClick={() => navigate({ to: "/inspect/new" })}>New Inspection</MButton>} />
+          <EmptyState title="No inspections yet" body="Use New Inspection below to send exterior photos." />
         ) : (
           list.map((item) => (
             <button key={item.id} type="button" className="relative h-32 overflow-hidden text-left" onClick={() => navigate({ to: "/inspect/$id", params: { id: item.id } })}>

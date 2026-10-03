@@ -196,12 +196,12 @@ export function HistoryScreen() {
         <div className="mt-4 grid gap-2">
           {rows.length === 0 ? <EmptyState title="No history" body="Appointments, requests, inspections, and documents will collect here." /> : null}
           {rows.map((row) => (
-            <button key={row.id} type="button" className="min-h-16 rounded-2xl bg-card px-4 py-3 text-left" onClick={() => navigate({ to: "/history/$id", params: { id: row.id } })}>
+            <button key={row.id} type="button" className="flex min-h-[4.5rem] flex-col justify-center border-b border-[#3d4a5c] py-3 text-left" onClick={() => navigate({ to: "/history/$id", params: { id: row.id } })}>
               <span className="flex items-center justify-between gap-2">
-                <span className="text-[15px] font-medium">{row.title}</span>
+                <span className="text-[16px] font-medium text-white">{row.title}</span>
                 <StatusChip status={row.status} />
               </span>
-              <span className="text-[12px] text-[var(--on-surface-variant)]">{row.id} · {row.meta}</span>
+              <span className="mt-1 text-[14px] text-[#d7e0ea]">{row.id} · {row.meta}</span>
             </button>
           ))}
         </div>
@@ -227,39 +227,95 @@ export function HistoryDetailScreen() {
     <SecureSurface>
       <div>
         <TopBar title="Record" back={() => navigate({ to: "/history" })} />
-        <div className="grid gap-3 px-4">
-          {appt ? (
-            <MCard>
-              <h1 className="text-[24px]">{db.services.find((s) => s.id === appt.serviceId)?.name}</h1>
-              <p className="mt-2 text-[14px]">{appt.date} · {STATUS_LABEL[appt.status]}</p>
-              <p className="mt-2 text-[14px] leading-6">{appt.gunsmithNotes || "No gunsmith notes yet."}</p>
-              {appt.quote ? <p className="mt-2">Quote {appt.quote}</p> : null}
-            </MCard>
-          ) : null}
+        <div className="grid gap-4 px-4 pb-8">
           {request ? (
-            <MCard>
-              <h1 className="text-[24px]">Request {request.id}</h1>
-              <p className="mt-2 text-[14px]">{request.description}</p>
-              <p className="mt-2 text-[14px]">Status: {STATUS_LABEL[request.status] ?? request.status}</p>
-              {request.quote ? <p>Quote: {request.quote}</p> : null}
-            </MCard>
+            <>
+              <section className="relative -mx-4 h-44 overflow-hidden">
+                <img src={db.services.find((s) => s.id === request.serviceId)?.image || asset("media/precision-work.jpg")} alt="" className="absolute inset-0 size-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0e1218] via-[#0e1218]/55 to-black/25" />
+                <div className="relative flex h-full flex-col justify-end px-4 pb-4">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Service request</p>
+                  <h1 className="text-[28px] leading-tight font-medium text-white">{db.services.find((s) => s.id === request.serviceId)?.name ?? "Request"}</h1>
+                  <p className="mt-1 text-[15px] text-white">{request.id}</p>
+                </div>
+                <span className="absolute inset-x-0 bottom-0 h-[3px] bg-tertiary" />
+              </section>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[16px] text-white">Status</p>
+                <StatusChip status={request.status} />
+              </div>
+              <section className="border border-[#3d4a5c] bg-[var(--surface-low)] px-4 py-3">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">What you asked</p>
+                <p className="mt-2 text-[16px] leading-6 text-white">{request.description}</p>
+              </section>
+              <section className="grid gap-3 border border-[#3d4a5c] bg-[var(--surface-low)] px-4 py-3">
+                <div>
+                  <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Firearm</p>
+                  <p className="mt-1 text-[16px] text-white">{request.make} {request.model}</p>
+                  <p className="text-[15px] text-[#d7e0ea]">{request.firearmType} · {request.caliber}</p>
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Contact</p>
+                  <p className="mt-1 text-[16px] text-white capitalize">{request.contactMethod} · {request.urgency}</p>
+                </div>
+                {request.quote ? (
+                  <div>
+                    <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Quote</p>
+                    <p className="mt-1 text-[16px] text-white">{request.quote}</p>
+                  </div>
+                ) : null}
+              </section>
+            </>
+          ) : null}
+          {appt ? (
+            <>
+              <section className="relative -mx-4 h-44 overflow-hidden">
+                <img src={db.services.find((s) => s.id === appt.serviceId)?.image || asset("media/hero-workshop.jpg")} alt="" className="absolute inset-0 size-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0e1218] via-[#0e1218]/55 to-black/25" />
+                <div className="relative flex h-full flex-col justify-end px-4 pb-4">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Appointment</p>
+                  <h1 className="text-[28px] leading-tight font-medium text-white">{db.services.find((s) => s.id === appt.serviceId)?.name}</h1>
+                  <p className="mt-1 text-[15px] text-white">{appt.id}</p>
+                </div>
+                <span className="absolute inset-x-0 bottom-0 h-[3px] bg-tertiary" />
+              </section>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[16px] text-white">{STATUS_LABEL[appt.status] ?? appt.status}</p>
+                <StatusChip status={appt.status} />
+              </div>
+              <section className="border border-[#3d4a5c] bg-[var(--surface-low)] px-4 py-3">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Firearm</p>
+                <p className="mt-1 text-[16px] text-white">{appt.make} {appt.model}</p>
+                <p className="text-[15px] text-[#d7e0ea]">{appt.firearmType} · {appt.caliber}</p>
+              </section>
+              <section className="border border-[#3d4a5c] bg-[var(--surface-low)] px-4 py-3">
+                <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">From the gunsmith</p>
+                <p className="mt-2 text-[16px] leading-6 text-white">{appt.gunsmithNotes || "No gunsmith notes yet."}</p>
+                {appt.quote ? <p className="mt-2 text-[16px] text-white">Quote {appt.quote}</p> : null}
+              </section>
+            </>
           ) : null}
           {inspection ? (
-            <MCard>
-              <h1 className="text-[24px]">{inspection.id}</h1>
-              <p className="mt-2 text-[14px] leading-6">{inspection.assessment?.notes || inspection.ai?.summary}</p>
-            </MCard>
+            <section className="border border-[#3d4a5c] bg-[var(--surface-low)] px-4 py-3">
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">Inspection</p>
+              <h1 className="mt-1 text-[24px] font-medium text-white">{inspection.id}</h1>
+              <div className="mt-2"><StatusChip status={inspection.status} /></div>
+              <p className="mt-3 text-[16px] leading-6 text-white">{inspection.assessment?.notes || inspection.ai?.summary || "No notes yet."}</p>
+            </section>
           ) : null}
           {doc ? (
-            <MCard>
-              <h1 className="text-[24px]">{doc.title}</h1>
-              {doc.lines.map((line) => (
-                <p key={line} className="mt-1 text-[14px]">{line}</p>
-              ))}
-              <MButton className="mt-4" onClick={() => setShare(true)}>Share or download</MButton>
-            </MCard>
+            <section className="border border-[#3d4a5c] bg-[var(--surface-low)] px-4 py-3">
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-tertiary uppercase">{doc.kind}</p>
+              <h1 className="mt-1 text-[24px] font-medium text-white">{doc.title}</h1>
+              <div className="mt-3 grid gap-2">
+                {doc.lines.map((line) => (
+                  <p key={line} className="text-[16px] leading-6 text-white">{line}</p>
+                ))}
+              </div>
+              <MButton full className="mt-4" onClick={() => setShare(true)}>Share or download</MButton>
+            </section>
           ) : null}
-          {!appt && !request && !inspection && !doc ? <p>This record is not on your account.</p> : null}
+          {!appt && !request && !inspection && !doc ? <p className="text-[16px] text-white">This record is not on your account.</p> : null}
         </div>
         <Sheet open={share} title="Document" onClose={() => setShare(false)}>
           <MButton full onClick={download}>Download PDF</MButton>
@@ -288,16 +344,26 @@ export function NotificationsScreen() {
   return (
     <div>
       <TopBar title="Notifications" back={() => navigate({ to: "/home" })} action={<button type="button" className="min-h-12 px-3 text-[14px] text-primary" onClick={markAllNotices}>Read all</button>} />
-      <div className="grid gap-2 px-4">
+      <div className="grid px-4">
         {list.length === 0 ? <EmptyState title="You're caught up" body="Appointment, message, and inspection alerts show up here." /> : null}
         {list.map((notice) => (
-          <button key={notice.id} type="button" className="rounded-2xl bg-card px-4 py-3 text-left" onClick={() => { markNotice(notice.id); navigate({ to: notice.href as never }); }}>
-            <span className="flex items-center justify-between">
-              <span className="text-[15px] font-medium">{notice.title}</span>
-              {!notice.read ? <span className="text-[12px] text-primary">New</span> : null}
+          <button
+            key={notice.id}
+            type="button"
+            className="flex min-h-[4.5rem] items-start gap-3 border-b border-[#3d4a5c] py-3 text-left"
+            onClick={() => {
+              markNotice(notice.id);
+              navigate({ to: notice.href as never });
+            }}
+          >
+            <span className={`mt-2 h-10 w-[3px] shrink-0 ${notice.read ? "bg-[#3d4a5c]" : "bg-tertiary"}`} aria-hidden />
+            <span className="min-w-0 flex-1">
+              <span className="flex items-center justify-between gap-2">
+                <span className="text-[16px] font-medium text-white">{notice.title}</span>
+                {!notice.read ? <span className="text-[13px] font-medium text-tertiary">New</span> : null}
+              </span>
+              <span className="mt-1 block text-[15px] leading-5 text-[#d7e0ea]">{notice.body}</span>
             </span>
-            <span className="mt-1 block text-[13px] text-[var(--on-surface-variant)]">{notice.body}</span>
-            <span className="mt-1 block text-[11px] text-[var(--on-surface-variant)]">Lock screen: {notice.lockText}</span>
           </button>
         ))}
       </div>

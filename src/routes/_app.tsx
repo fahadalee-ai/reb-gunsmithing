@@ -33,7 +33,7 @@ function CustomerLayout() {
 
   const hideNav = ["/book/new", "/request", "/inspect/new"].some((item) => path.startsWith(item)) || path.startsWith("/book/done") || path.startsWith("/messages/");
   const fab =
-    path === "/home" || path === "/book"
+    path === "/book"
       ? { label: "Book Appointment", to: "/book/new" as const }
       : path === "/inspect"
         ? { label: "New Inspection", to: "/inspect/new" as const }

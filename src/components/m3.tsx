@@ -32,7 +32,7 @@ export function MButton({ variant = "filled", full, className, type = "button", 
         "inline-flex h-12 min-w-12 items-center justify-center gap-2 rounded-full px-5 text-[14px] font-medium tracking-wide transition active:scale-[0.98] disabled:opacity-40",
         full && "w-full",
         variant === "filled" && "bg-primary text-primary-foreground",
-        variant === "tonal" && "bg-[var(--primary-container)] text-[var(--on-primary-container)]",
+        variant === "tonal" && "border border-[#9eb6d4] bg-[#24344a] text-white",
         variant === "outlined" && "border border-outline bg-transparent text-primary",
         variant === "text" && "bg-transparent px-3 text-primary",
         variant === "danger" && "bg-secondary text-secondary-foreground",
@@ -215,8 +215,8 @@ export function MChip({
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        "inline-flex h-10 items-center rounded-lg border px-4 text-[14px] font-medium disabled:opacity-35",
-        selected ? "border-transparent bg-[var(--secondary-container)] text-[var(--on-secondary-container)]" : "border-outline text-foreground",
+        "inline-flex h-12 items-center border px-4 text-[14px] font-medium disabled:opacity-35",
+        selected ? "border-transparent bg-primary text-primary-foreground" : "border-[#9eb6d4] text-white",
       )}
     >
       {children}
@@ -228,7 +228,7 @@ export function StatusChip({ status }: { status: string }) {
   const label = status.replaceAll("_", " ");
   const tone =
     status === "cancelled" || status === "attention"
-      ? "bg-[var(--secondary-container)] text-[var(--on-secondary-container)]"
+      ? "bg-secondary text-[var(--on-secondary)]"
       : status === "completed" || status === "assessed" || status === "good" || status === "ready"
         ? "bg-primary-container text-[var(--on-primary-container)]"
         : status === "minor" || status === "priority"
@@ -268,21 +268,21 @@ export function TopBar({
   action?: ReactNode;
 }) {
   return (
-    <header className={cn("sticky top-0 z-30 bg-background/90 px-2 backdrop-blur", large ? "pb-2 pt-2" : "h-16")}>
+    <header className={cn("sticky top-0 z-50 bg-background px-1", large ? "pb-2 pt-2" : "h-16")}>
       <div className="flex h-12 items-center gap-1">
         {back ? (
-          <MIconButton label="Back" onClick={back}>
-            <ChevronLeft />
+          <MIconButton label="Back" className="relative z-10 shrink-0" onClick={back}>
+            <ChevronLeft className="pointer-events-none size-6" />
           </MIconButton>
         ) : (
-          <span className="w-2" />
+          <span className="w-2 shrink-0" />
         )}
         {!large && title ? (
-          <h1 className={cn("flex-1 truncate text-[22px] font-normal", center && "text-center")}>{title}</h1>
+          <h1 className={cn("min-w-0 flex-1 truncate text-[22px] font-normal", center && "text-center")}>{title}</h1>
         ) : (
-          <span className="flex-1" />
+          <span className="min-w-0 flex-1" />
         )}
-        {action}
+        {action ? <div className="relative z-10 shrink-0">{action}</div> : null}
       </div>
       {large && title ? <h1 className="px-4 text-[32px] leading-tight font-normal">{title}</h1> : null}
     </header>
@@ -304,7 +304,7 @@ export function BottomNav() {
     (m) => m.from === "staff" && m.status !== "read" && db.conversations.some((c) => c.id === m.conversationId && c.userId === user?.id),
   ).length;
   return (
-    <nav className="absolute inset-x-0 bottom-0 z-40 border-t border-[var(--outline-variant)] bg-surface-low pb-[env(safe-area-inset-bottom)]" aria-label="Primary">
+    <nav className="absolute inset-x-0 bottom-0 z-40 border-t border-[#3d4a5c] bg-[#151b24] pb-[env(safe-area-inset-bottom)]" aria-label="Primary">
       <ul className="grid h-20 grid-cols-5">
         {NAV.map((item) => {
           const active = path === item.to || path.startsWith(`${item.to}/`);
@@ -314,13 +314,15 @@ export function BottomNav() {
               <Link
                 to={item.to}
                 aria-current={active ? "page" : undefined}
-                className="flex h-full flex-col items-center justify-center gap-1 text-[12px] font-medium"
+                className="flex h-full flex-col items-center justify-center gap-1 font-medium"
               >
-                <span className={cn("flex h-8 w-16 items-center justify-center rounded-full", active && "bg-primary-container text-on-primary-container")}>
+                <span className={cn("relative flex h-8 w-16 items-center justify-center", active && "bg-primary text-primary-foreground")}>
                   <Icon className="size-5" aria-hidden />
-                  {item.to === "/messages" && unread > 0 ? <span className="sr-only">{unread} unread</span> : null}
+                  {item.to === "/messages" && unread > 0 ? (
+                    <span className="absolute top-0.5 right-3 grid size-4 place-items-center bg-tertiary text-[10px] font-semibold text-[var(--on-tertiary)]">{unread > 9 ? "9+" : unread}</span>
+                  ) : null}
                 </span>
-                <span className={active ? "text-foreground" : "text-[var(--on-surface-variant)]"}>{item.label}</span>
+                <span className={active ? "text-white" : "text-[#d7e0ea]"} style={{ fontSize: 12, lineHeight: "16px" }}>{item.label}</span>
               </Link>
             </li>
           );
@@ -561,12 +563,17 @@ export function SecureSurface({ children }: { children: ReactNode }) {
       {children}
       {hidden ? <div className="absolute inset-0 z-20 bg-background" aria-hidden /> : null}
       {warn ? (
-        <div className="absolute inset-x-4 top-4 z-30 rounded-2xl bg-secondary p-4 text-[14px] text-secondary-foreground" role="alert">
-          <p className="font-medium">Screen capture blocked in the Android app</p>
-          <p className="mt-1">This preview cannot fully stop a system recorder. The installed app uses FLAG_SECURE.</p>
-          <button type="button" className="mt-3 min-h-12 font-medium underline" onClick={() => setWarn(false)}>
-            Dismiss
-          </button>
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/65 px-5">
+          <div role="alert" className="w-full max-w-[420px] border border-[#3d4a5c] bg-[#1c2430] px-5 py-5">
+            <span className="mb-4 block h-[3px] w-12 bg-tertiary" />
+            <h2 className="text-[22px] leading-tight font-medium text-white">Screenshots stay off</h2>
+            <p className="mt-3 text-[16px] leading-6 text-[#d7e0ea]">
+              Photos and messages on this screen are private. This preview cannot block every recorder. The installed app blocks screenshots.
+            </p>
+            <button type="button" className="mt-5 h-12 w-full bg-primary text-[16px] font-medium text-primary-foreground" onClick={() => setWarn(false)}>
+              Dismiss
+            </button>
+          </div>
         </div>
       ) : null}
     </div>

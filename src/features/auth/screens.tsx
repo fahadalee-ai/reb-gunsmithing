@@ -54,9 +54,9 @@ function AuthForm({
         <header className="relative h-40 shrink-0 overflow-hidden">
           <img src={image} alt="" className="absolute inset-0 size-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-[#0e1218]/62 to-[var(--surface)]" />
-          <div className="absolute inset-x-0 top-0 flex items-start justify-between px-1 pt-2">
+          <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between px-1 pt-2">
             {backTo ? (
-              <Link to={backTo} className="inline-flex h-11 items-center gap-0.5 px-2 text-[14px] font-medium text-white">
+              <Link to={backTo} className="relative z-10 inline-flex h-11 items-center gap-0.5 px-2 text-[14px] font-medium text-white">
                 <ChevronLeft className="size-5" aria-hidden /> Back
               </Link>
             ) : (

@@ -245,6 +245,10 @@
   font-size: 15px !important;
   line-height: 1.4 !important;
 }
+nav[aria-label="Primary"] .text-\[12px\] {
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+}
 .text-\[13px\] {
   font-size: 15px !important;
   line-height: 1.4 !important;

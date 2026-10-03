@@ -40,7 +40,7 @@ export function AppointmentsScreen() {
       </div>
       <div className="grid gap-3 px-4 py-4">
         {list.length === 0 ? (
-          <EmptyState title="Nothing in this tab" body="Book a visit and it will show up here." action={<MButton onClick={() => navigate({ to: "/book/new" })}>Book Appointment</MButton>} />
+          <EmptyState title="Nothing in this tab" body="Use Book Appointment below to set up a visit." />
         ) : (
           list.map((appt) => {
             const service = db.services.find((s) => s.id === appt.serviceId);
@@ -87,8 +87,8 @@ export function AppointmentDetailScreen() {
       <section className="relative h-52 overflow-hidden">
         <img src={service?.image || asset("media/hero-workshop.jpg")} alt="" className="absolute inset-0 size-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#0e1218]" />
-        <div className="relative flex h-full flex-col px-2 pt-2 pb-4">
-          <button type="button" className="inline-flex h-11 w-fit items-center gap-0.5 px-2 text-[14px] font-medium text-white" onClick={() => navigate({ to: "/book" })}>
+        <div className="relative z-10 flex h-full flex-col px-2 pt-2 pb-4">
+          <button type="button" className="relative z-10 inline-flex h-11 w-fit items-center gap-0.5 px-2 text-[14px] font-medium text-white" onClick={() => navigate({ to: "/book" })}>
             <ChevronLeft className="size-5" aria-hidden /> Back
           </button>
           <div className="mt-auto px-2">
@@ -252,9 +252,18 @@ export function BookFlowScreen() {
         {step === 0 && (
           <div className="grid gap-3">
             {db.services.map((item) => (
-              <button key={item.id} type="button" onClick={() => setServiceId(item.id)} className={`rounded-2xl border p-4 text-left ${serviceId === item.id ? "border-primary bg-primary-container" : "border-transparent bg-card"}`}>
-                <p className="text-[18px]">{item.name}</p>
-                <p className="text-[14px] text-[var(--on-surface-variant)]">{item.summary}</p>
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setServiceId(item.id)}
+                className={`relative h-24 overflow-hidden border-2 text-left ${serviceId === item.id ? "border-tertiary" : "border-transparent"}`}
+              >
+                <img src={item.image} alt="" className="absolute inset-0 size-full object-cover" />
+                <span className="absolute inset-0 bg-gradient-to-r from-[#0e1218]/95 via-[#0e1218]/78 to-[#0e1218]/35" />
+                <span className="relative flex h-full flex-col justify-center px-4 text-white">
+                  <span className="text-[18px] font-medium">{item.name}</span>
+                  <span className="text-[14px] text-white/80">{item.summary}</span>
+                </span>
               </button>
             ))}
           </div>
