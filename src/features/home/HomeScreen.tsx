@@ -40,7 +40,7 @@ export function HomeScreen() {
               className="relative grid size-12 place-items-center bg-black/35 text-white"
             >
               <Bell className="size-5" />
-              {unread > 0 ? <span className="absolute top-1.5 right-1.5 grid size-5 place-items-center bg-secondary text-[11px] text-white">{unread}</span> : null}
+              {unread > 0 ? <span className="absolute top-1.5 right-1.5 grid size-5 place-items-center bg-secondary text-[11px] text-[var(--on-secondary)]">{unread}</span> : null}
             </Link>
           </div>
           <div className="mt-auto">

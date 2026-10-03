@@ -139,50 +139,37 @@ export function MSelect({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-invalid={Boolean(error)}
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen((current) => !current)}
         className={cn(
           "flex h-14 w-full items-center justify-between gap-3 border bg-surface-high px-3 text-left text-[16px] text-foreground disabled:opacity-40",
           error ? "border-2 border-error" : "border-outline",
         )}
       >
         <span className="truncate">{selected?.label || "Select"}</span>
-        <ChevronDown className="size-5 shrink-0 text-[#d7e0ea]" aria-hidden />
+        <ChevronDown className={cn("size-5 shrink-0 text-[#d7e0ea] transition", open && "rotate-180")} aria-hidden />
       </button>
       {open ? (
-        <div className="fixed inset-0 z-[80] flex items-end justify-center bg-black/60" onClick={() => setOpen(false)}>
-          <div
-            role="listbox"
-            aria-label={label}
-            className="flex max-h-[70dvh] w-full max-w-[480px] flex-col bg-[#1c2430]"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-center justify-between border-b border-[#3d4a5c] px-4 py-3">
-              <p className="text-[16px] font-medium text-white">{label}</p>
-              <button type="button" className="h-11 px-2 font-medium text-tertiary" onClick={() => setOpen(false)}>
-                Close
-              </button>
-            </div>
-            <div className="overflow-y-auto">
-              {options.map((option) => (
-                <button
-                  key={`${option.value}:${option.label}`}
-                  type="button"
-                  role="option"
-                  aria-selected={option.value === value}
-                  className={cn(
-                    "flex min-h-14 w-full items-center px-4 text-left text-[16px]",
-                    option.value === value ? "bg-primary text-white" : "text-white",
-                  )}
-                  onClick={() => {
-                    onChange(option.value);
-                    setOpen(false);
-                  }}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div role="listbox" aria-label={label} className="mt-1 max-h-64 overflow-y-auto overscroll-contain border border-[#3d4a5c] bg-[#1c2430]">
+          {options.map((option) => (
+            <button
+              key={`${option.value}:${option.label}`}
+              type="button"
+              role="option"
+              aria-selected={option.value === value}
+              className={cn(
+                "flex min-h-14 w-full items-center px-4 text-left text-[16px]",
+                option.value === value ? "bg-primary text-white" : "text-white active:bg-[#2c3a4e]",
+              )}
+              onPointerUp={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onChange(option.value);
+                setOpen(false);
+              }}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
       ) : null}
       {error ? <p className="mt-1 px-1 text-[12px] font-medium text-error">{error}</p> : hint ? <p className="mt-1 px-1 text-[12px] text-[var(--on-surface-variant)]">{hint}</p> : null}

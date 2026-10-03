@@ -7,11 +7,18 @@ import { FirearmFields } from "@/components/FirearmFields";
 import { CheckRow, ConfirmDialog, EmptyState, MArea, MButton, MCard, MChip, MField, MSelect, PageBanner, Progress, Sheet, StatusChip, TopBar } from "@/components/m3";
 import { validateFirearm, validateSerial } from "@/lib/firearms";
 import { POLICY_ACK, STATUS_LABEL, TIMEZONE } from "@/lib/business";
-import { fileToPrivateJpeg } from "@/lib/media";
 import { formatTime, formatWhen, timeSlots, upcomingDates, weekdayName } from "@/lib/slots";
 import { useStore } from "@/lib/store";
 import { asset } from "@/lib/utils";
 import type { FirearmType, MediaRef, ServiceId } from "@/lib/types";
+
+const SAMPLE_PHOTOS = [
+  asset("media/precision-work.jpg"),
+  asset("media/services-detail.jpg"),
+  asset("media/tools-grid.jpg"),
+  asset("media/hero-workshop.jpg"),
+  asset("media/craftsman-hands.jpg"),
+];
 
 export function AppointmentsScreen() {
   const { db, user } = useStore();
@@ -329,21 +336,20 @@ export function BookFlowScreen() {
         {step === 4 && (
           <div className="grid gap-3">
             <p className="text-[14px] leading-6">Optional. Photos stay in the app and are not saved to your camera roll.</p>
-            <label className="grid min-h-12 place-items-center rounded-full border border-outline text-[14px]">
+            <button
+              type="button"
+              className="grid h-12 place-items-center border border-[#9eb6d4] text-[16px] font-medium text-white"
+              onClick={() => {
+                if (!user) return;
+                const src = SAMPLE_PHOTOS[Math.floor(Math.random() * SAMPLE_PHOTOS.length)];
+                setMedia((list) => [
+                  ...list,
+                  { id: crypto.randomUUID(), ownerId: user.id, kind: "photo", src, caption: "", createdAt: new Date().toISOString(), exifStripped: true },
+                ]);
+              }}
+            >
               Add a photo
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                className="sr-only"
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file || !user) return;
-                  const src = await fileToPrivateJpeg(file);
-                  setMedia((list) => [...list, { id: crypto.randomUUID(), ownerId: user.id, kind: "photo", src, caption: "", createdAt: new Date().toISOString(), exifStripped: true }]);
-                }}
-              />
-            </label>
+            </button>
             <div className="grid grid-cols-3 gap-2">
               {media.map((item) => (
                 <img key={item.id} src={item.src} alt="" className="h-24 w-full rounded-xl object-cover" />

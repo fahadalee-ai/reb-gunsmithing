@@ -424,7 +424,7 @@ function Result({ report, captures, onSend, disclaimer }: { report: AIReport; ca
         <p className="mt-2 text-[14px] leading-6">{report.summary}</p>
       </MCard>
       {report.severe ? (
-        <div className="rounded-2xl bg-secondary p-4 text-[14px] leading-6 text-white" role="alert">
+        <div className="rounded-2xl bg-secondary p-4 text-[14px] leading-6 text-[var(--on-secondary)]" role="alert">
           Visible findings should be inspected in person before this firearm is used again.
         </div>
       ) : null}
@@ -445,7 +445,7 @@ function Result({ report, captures, onSend, disclaimer }: { report: AIReport; ca
           <figure key={capture.id} className="relative">
             <img src={capture.src} alt={capture.angle ?? "Capture"} className="h-32 w-full rounded-xl object-cover" />
             {report.findings.some((f) => f.captureId === capture.id && f.severity === "attention") ? (
-              <span className="absolute top-2 left-2 rounded-md bg-secondary px-2 py-1 text-[11px] text-white">Review area</span>
+              <span className="absolute top-2 left-2 rounded-md bg-secondary px-2 py-1 text-[11px] text-[var(--on-secondary)]">Review area</span>
             ) : null}
           </figure>
         ))}

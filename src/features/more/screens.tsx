@@ -44,7 +44,7 @@ export function MessagesScreen() {
                   <span className="block text-[16px] font-medium">{convo.subject}</span>
                   <span className="block truncate text-[13px] text-[var(--on-surface-variant)]">{last?.text ?? "No messages"}</span>
                 </span>
-                {unread > 0 ? <span className="grid size-6 place-items-center bg-secondary text-[12px] text-white">{unread}</span> : <ChevronRight className="size-4 text-[var(--on-surface-variant)]" aria-hidden />}
+                {unread > 0 ? <span className="grid size-6 place-items-center bg-secondary text-[12px] text-[var(--on-secondary)]">{unread}</span> : <ChevronRight className="size-4 text-[var(--on-surface-variant)]" aria-hidden />}
               </button>
             );
           })

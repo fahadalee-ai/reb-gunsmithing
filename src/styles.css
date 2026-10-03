@@ -55,9 +55,9 @@
   --primary-foreground: #f4f8ff;
   --primary-container: #1e3f66;
   --on-primary-container: #d3e4ff;
-  --secondary: #8a0010;
-  --on-secondary: #ffffff;
-  --secondary-foreground: #ffffff;
+  --secondary: #ff6b6b;
+  --on-secondary: #3b0007;
+  --secondary-foreground: #3b0007;
   --secondary-container: #5c000a;
   --on-secondary-container: #ffdad6;
   --tertiary: #ffe627;
